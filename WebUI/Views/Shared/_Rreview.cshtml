@@ -1,0 +1,10 @@
+﻿@model  Domain.Entites.Review
+<li>
+    <div class="review-heading">
+        <h5 class="name">@Model.Author</h5>
+        <p class="date">@Model.Date</p>
+        @Html.ReviewRating(Model.Rating, "review-rating")
+    </div>
+    <div class="review-body">
+        <p>@Model.Description</p></div>
+</li>

@@ -1,0 +1,37 @@
+﻿@model WebUI.Areas.Administrator.Models.ImageUploadViewModel
+
+
+
+@Html.HiddenFor(m => m.Id, new { @class = "id" })
+@if (Model.Image == null)
+{
+<div class="br5">
+    @Html.HiddenFor(m => m.Id, new { @class = "id" })
+    @*@Html.HiddenFor(m => m.State, new { @class = "State" })*@
+    <input class="State" id="States" name="States[0]" value="@Model.State" type="hidden">
+    <a href="javascript:void(0);" id="main_image" class="block tcenter upload-main-foto" title="Добавить фото">
+        <i data-icon="upload" class="fa fa-fw fa-plus-circle"></i>
+        <img src=@Url.Content("~/temp/" + Model.Name) alt="Thumbnail image" class="temp-img ImageLoading" />
+        <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    </a>
+    <a class="delete-photo-a icon mini vis remove3 abs" title="Удалить" href="javascript:void(0);" rel="1">Delete</a>
+    <input type="file" name="UploadFile" id="txtUploadFile" class="makethispretty ImageLoading" style="display:none" />
+</div>
+}
+else
+{
+<div class="br5 loaded">
+    @Html.HiddenFor(m => m.Id, new { @class = "id" })
+    @*@Html.HiddenFor(m => m.State, new { @class = "State" })*@
+    <input class="State" id="States" name="States[0]" value="@Model.State" type="hidden">
+    <a href="javascript:void(0);" id="main_image" class="block tcenter upload-main-foto" title="Добавить фото">
+        <i data-icon="upload" class="fa fa-fw fa-plus-circle"></i>
+        <img src=@Url.Content($"~/Admin/GetImage?ProductID={Model.ProductID}&width=263&height=263") alt="Thumbnail image" class="db-image" />
+        <div class="lds-roller" style="display:none;"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    </a>
+    <a class="delete-photo-a icon mini vis remove3 abs" title="Удалить" href="javascript:void(0);" rel="1">Delete</a>
+    <input type="file" name="UploadFile" id="txtUploadFile" class="makethispretty ImageLoading" style="display:none" />
+</div>
+}
+
+

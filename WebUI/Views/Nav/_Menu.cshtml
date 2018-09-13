@@ -1,0 +1,36 @@
+﻿@model IEnumerable<string>
+<nav id="navigation">
+    <!-- container -->
+    <div class="container">
+        <!-- responsive-nav -->
+        <div id="responsive-nav">
+            <!-- NAV -->
+            <ul class="main-nav nav navbar-nav">
+                <li>@Html.ActionLink("Home", "Index", "Product")</li>
+                <li>
+                    @Html.ActionLink("All Categories", "Store", "Product")
+                </li>
+
+                @foreach (var link in Model)
+                {
+                    <li>
+                        @Html.RouteLink(link, new
+                        {
+                            Controller = "Product",
+                            Action = "Store",
+                            Сategory = link,
+                            page = 1
+                        },
+                           new
+                           {
+                               @class = (link == ViewBag.SelectedCategory ? "active" : "")
+                           })
+                    </li>
+                }
+            </ul>
+            <!-- /NAV -->
+        </div>
+        <!-- /responsive-nav -->
+    </div>
+    <!-- /container -->
+</nav>

@@ -1,0 +1,15 @@
+﻿@model IEnumerable<string>
+
+@Html.ActionLink("Домой","List","Books",null,new { @class="btn btn-block btn-default btn-lg"})
+
+@foreach (var link in Model)
+{
+    @Html.RouteLink(link,new {
+    Controller = "Books",
+    Action = "List",
+    genre=link,
+    page =1
+},
+    new { @class= "btn btn-block btn-default btn-lg"
+    +(link == ViewBag.SelectedGenre ? " btn-primary": "") })
+}

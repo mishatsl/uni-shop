@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Domain.Entites.Review>
+
+<div id="tab3" class="tab-pane fade in active">
+    <div class="row">
+        <!-- Rating -->
+        <div class="col-md-3">
+            <div id="rating">
+                <div class="rating-avg">
+                    <span>@Session["Avarage_rating"]</span>
+                    @if(Model.Count()>0)
+                    {
+                        int average_rating = (Model.Sum(m => m.Rating) / Model.Count());
+                    }
+                    @Html.ReviewRating(Model.Where(m => m.Rating == 5).Count(), "rating-stars")
+                    
+                </div>
+                <ul class="rating">
+                    @for (int i = 5; i > 0; i--)
+                    {
+                        <li>
+                            @Html.ReviewRating(i, "rating-stars")
+                            <div class="rating-progress">
+                                <div style="width: 80%;"></div>
+                            </div>
+                            <span class="sum">@Model.Where(m => m.Rating == i).Count()</span>
+                        </li>
+                    }
+                   
+                </ul>
+            </div>
+        </div>
+        <!-- /Rating -->
+        <!-- Reviews -->
+        <div class="col-md-6">
+            <div id="reviews">
+                <ul class="reviews">
+                    @foreach (Domain.Entites.Review review in Model)
+                    {
+                        @Html.Partial("_Rreview", review)
+                    }
+                </ul>
+            </div>
+        </div>
+        <!-- /Reviews -->
+        <!-- Review Form -->
+        <div class="col-md-3">
+            <div id="review-form">
+                <form class="review-form">
+                    @using (Html.BeginForm("ReviewsArea", "Product", FormMethod.Post))
+                    {
+                        @Html.TextBox("Author",null , new { @class = "input", placeholder = "Your Name" })
+                        @Html.TextBox("Email",null , new { @class = "input", placeholder = "Your Email" })
+                        @Html.TextArea("Description", new { @class = "input", placeholder = "Your Review" })
+
+
+                        <div class="input-rating">
+                            <span>Your Rating: </span>
+                            <div class="stars">
+                                @Html.RadioButton("rating", "5", false, new { id = "star5" })<label for="star5"></label>
+                                @Html.RadioButton("rating", "4", false, new { id = "star4" })<label for="star4"></label>
+                                @Html.RadioButton("rating", "3", false, new { id = "star3" })<label for="star3"></label>
+                                @Html.RadioButton("rating", "2", false, new { id = "star2" })<label for="star2"></label>
+                                @Html.RadioButton("rating", "1", false, new { id = "star1" })<label for="star1"></label>
+                            </div>
+                        </div>
+                        <input value="Submit" type="submit" class="primary-btn" />
+                    }
+                </form>
+            </div>
+        </div>
+        <!-- /Review Form -->
+    </div>
+</div>

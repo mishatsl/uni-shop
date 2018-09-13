@@ -1,0 +1,13 @@
+﻿@model WebUI.Models.MiniProductWidgetViewModel
+
+<!-- product widget -->
+<div class="product-widget">
+    <div class="product-img">
+        <img src="@Url.Action("GetImage","Product", new { Model.ProductID})" alt="">
+    </div>
+    <div class="product-body">
+        <p class="product-category">Category @Model.Category</p>
+        <h3 class="product-name"><a href="@Url.Action("Product","Product",new { id = Model.ProductID })">product name goes here @Model.Name</a></h3>
+        <h4 class="product-price">$@Model.Price<del class="product-old-price">$@Model.OldPrice</del></h4>
+    </div>
+</div>

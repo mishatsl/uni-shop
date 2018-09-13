@@ -1,0 +1,33 @@
+﻿@model Domain.Entites.Cart
+<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" href="#" role="button">
+    <i class="fa fa-shopping-cart"></i>
+    <span>Your Cart</span>
+    @{
+        int sum = @Model.Lines.Sum(x => x.Quantity);
+    }
+    @if (sum > 0)
+    {
+        <div class="qty">@sum</div>
+    }
+</a>
+<div class="cart-dropdown">
+
+    <div class="cart-list">
+        @foreach (var Line in Model.Lines)
+        {
+            @Html.Partial("_ProductWidget", Line)
+        }
+    </div>
+    <div class="cart-summary">
+        <small>@Model.Lines.Sum(p => p.Quantity) Item(s) selected</small>
+        <h5>SUBTOTAL: $@Model.ComputeTotalValue()</h5>
+    </div>
+    <div class="cart-btns">
+        <a  href="@Url.Action("Index",
+                              "Cart",
+                              new{returnUrl = Request.Url.PathAndQuery},null)">View Cart</a>
+        <a  href="@Url.Action("Checkout",
+                             "Cart",
+                             new{returnUrl = Request.Url.PathAndQuery},null)">Checkout<i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+</div>

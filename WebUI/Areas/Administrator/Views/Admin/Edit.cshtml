@@ -1,0 +1,254 @@
+﻿@model WebUI.Areas.Administrator.Models.UploadProductViewModel
+
+@{
+
+    Layout = "~/Areas/Administrator/Views/Shared/_AdminLayout.cshtml";
+
+}
+@*@{
+        WebImage photo = null;
+        var newFileName = "";
+        var imagePath = "";
+        var imageThumbPath = "";
+
+        if (IsPost)
+        {
+            photo = WebImage.GetImageFromRequest();
+            if (photo != null)
+            {
+                newFileName = Guid.NewGuid().ToString() + "_" +
+                    Path.GetFileName(photo.FileName);
+                imagePath = @"temp\" + newFileName;
+                photo.Save(@"~\" + imagePath);
+
+                imageThumbPath = @"temp\thumbs\" + newFileName;
+                photo.Resize(width: 60, height: 60, preserveAspectRatio: true,
+                   preventEnlarge: true);
+                photo.Save(@"~\" + imageThumbPath);
+            }
+        }
+    }*@
+
+<h2>@ViewBag.Title</h2>
+<div class="box">
+    <div class="box-header">
+        <h3 class="box-title">@ViewBag.Title</h3>
+    </div>
+    <!-- /.box-header -->
+    @using (Html.BeginForm("Edit", "Admin", FormMethod.Post, new { ProcuctID = Model.Product.ProductID, enctype = "multipart/form-data" }))
+    {
+        <div class="box-body">
+            <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap">
+                <div class="row"><div class="col-sm-6"></div><div class="col-sm-6"></div></div><div class="row">
+                                                                                                   <div class="col-sm-12">
+                                                                                                       @Html.HiddenFor(m => m.Product.ProductID)
+                                                                                                       @*@foreach (var property in ViewData.ModelMetadata.Properties.ElementAt(0).Properties)
+                                                                                                       {
+                                                                                                           switch (property.PropertyName)
+                                                                                                           {
+                                                                                                               case "ProductID":
+                                                                                                               case "ImageData":
+                                                                                                               case "ImageMimeType":
+                                                                                                               case "average_rating":
+                                                                                                               case "Reviews":
+                                                                                                               case "ImagesWithResolutions":
+                                                                                                               case "ImagesID":
+                                                                                                               case "MainImageIndex":
+                                                                                                                   break;
+                                                                                                               default:
+                                                                                                                   <div class="form-group">
+
+                                                                                                                       @if (property.PropertyName == "Description")
+                                                                                                                       {
+                                                                                                                           <label>@(property.DisplayName ?? property.PropertyName)</label>
+                                                                                                                           @Html.TextArea(property.PropertyName, null, new { @class = "form-control", rows = 5 })
+                                                                                                                           @Html.ValidationMessage(property.PropertyName)
+                                                                                                                       }
+                                                                                                                       else if (property.PropertyName == "New" || property.PropertyName == "InStock" || property.PropertyName == "TopSelling")
+                                                                                                                       {
+                                                                                                                           @Html.CheckBox(property.PropertyName, new { @class = "form-control" })
+                                                                                                                           <label>@(property.DisplayName ?? property.PropertyName)</label>
+                                                                                                                       }
+                                                                                                                       else
+                                                                                                                       {
+                                                                                                                           <label>@(property.DisplayName ?? property.PropertyName)</label>
+                                                                                                                           @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+                                                                                                                           @Html.ValidationMessage(property.PropertyName)
+                                                                                                                       }
+                                                                                                                   </div>
+                                                                                                                   break;
+                                                                                                           }
+
+
+                                                                                                       }*@
+                                                                                                       <div class="form-group">
+                                                                                                           <label>Name</label>
+                                                                                                           @Html.TextBoxFor(m => m.Product.Name, null, new { @class = "form-control" })
+                                                                                                           @Html.ValidationMessageFor(m => m.Product.Name)
+                                                                                                       </div>
+                                                                                                       <div class="form-group">
+                                                                                                           <label>Сategory</label>
+                                                                                                           @Html.TextBoxFor(m => m.Product.Сategory, null, new { @class = "form-control" })
+                                                                                                           @Html.ValidationMessageFor(m => m.Product.Name)
+                                                                                                       </div>
+                                                                                                       <div class="form-group">
+                                                                                                           <label>Brand</label>
+                                                                                                           @Html.TextBoxFor(m => m.Product.Brand, null, new { @class = "form-control" })
+                                                                                                           @Html.ValidationMessageFor(m => m.Product.Name)
+                                                                                                       </div>
+                                                                                                       <div class="form-group">
+                                                                                                           <label>Description</label>
+                                                                                                           @Html.TextAreaFor(m => m.Product.Description, new { @class = "form-control" })
+                                                                                                           @Html.ValidationMessageFor(m => m.Product.Name)
+                                                                                                       </div>
+                                                                                                       <div class="form-group">
+                                                                                                           <label>Color</label>
+                                                                                                           @Html.TextBoxFor(m => m.Product.Color, null, new { @class = "form-control" })
+                                                                                                           @Html.ValidationMessageFor(m => m.Product.Name)
+                                                                                                       </div>
+                                                                                                       <div class="form-group">
+                                                                                                           <label>Price</label>
+                                                                                                           @Html.TextBoxFor(m => m.Product.Price, null, new { @class = "form-control" })
+                                                                                                           @Html.ValidationMessageFor(m => m.Product.Name)
+                                                                                                       </div>
+                                                                                                       <div class="form-group">
+                                                                                                           <label>PreviosPrice</label>
+                                                                                                           @Html.TextBoxFor(m => m.Product.PreviousPrice, null, new { @class = "form-control" })
+                                                                                                           @Html.ValidationMessageFor(m => m.Product.Name)
+                                                                                                       </div>
+                                                                                                       <div class="form-group">
+                                                                                                           <label>Color</label>
+                                                                                                           @Html.TextBoxFor(m => m.Product.Color, null, new { @class = "form-control" })
+                                                                                                           @Html.ValidationMessageFor(m => m.Product.Name)
+                                                                                                       </div>
+                                                                                                       <div class="form-group">
+                                                                                                           <label>Details</label>
+                                                                                                           @Html.TextAreaFor(m => m.Product.Details, new { @class = "form-control" })
+                                                                                                           @Html.ValidationMessageFor(m => m.Product.Name)
+                                                                                                       </div>
+                                                                                                       <div class="form-group">
+                                                                                                           <label>Feature</label>
+                                                                                                           @Html.TextBoxFor(m => m.Product.feature, null, new { @class = "form-control" })
+                                                                                                           @Html.ValidationMessageFor(m => m.Product.Name)
+                                                                                                       </div>
+                                                                                                       <div class="form-group">
+                                                                                                           @Html.CheckBoxFor(m => m.Product.InStock, new { @class = "form-control" })
+                                                                                                           <label>InStock</label>
+                                                                                                       </div>
+                                                                                                       <div class="form-group">
+                                                                                                           @Html.CheckBoxFor(m => m.Product.New, new { @class = "form-control" })
+                                                                                                           <label>New</label>
+                                                                                                       </div>
+                                                                                                       <div class="form-group">
+                                                                                                           @Html.CheckBoxFor(m => m.Product.TopSelling, new { @class = "form-control" })
+                                                                                                           <label>TopSelling</label>
+                                                                                                       </div>
+                                                                                                       <div class="form-group">
+                                                                                                           @*<div style="position:relative;">
+                <label>Image</label>
+                <a class='btn' href='javascript:;'>
+                    Choose File...
+                    <input type="file" name="Image" size="40"
+                           style="position:absolute;z-index:2;top:0;
+                            left:0;filter: alpha(opacity=0); opacity:0;
+                            background-color:transparent;color:transparent;"
+                           onchange='$("#upload-file-info").html($(this).val());'>
+                </a>
+                <span class='label label-info' id="upload-file-info"></span>
+            </div>
+            @if (Model.ImageData == null)
+            {
+                <div class="form-control-static">No Image</div>
+            }
+            else
+            {
+                <img class="img-thumbnail" width="150" height="150"
+                     src="@Url.Action("GetImage", "Books",new { Model.BookID})" />
+            }*@
+
+
+                                                                                                           <div class="fleft clr rel focusbox">
+                                                                                                               @*<input name="data[riak_key]" id="riakKey" value="" type="hidden">
+                <input id="adID" value="" type="hidden">*@
+                                                                                                               @{ int count = Model.Product.ImagesWithResolutions.Count(); }
+                                                                                                               <ul class="photos-show-mini clr ui-sortable">
+                                                                                                                   <li id="add-file-1" class="fleft empty rel first-child main_image_class" data-slot="1" style="z-index: 0;">
+                                                                                                                       @Html.Partial("_UploadMainImageTemp", new WebUI.Areas.Administrator.Models.ImageUploadViewModel
+                                                                                                                  {
+                                                                                                                      Id = 1,
+                                                                                                                      ProductID = Model.Product.ProductID,
+                                                                                                                      Image = count !=0 ? Model.Product.ImagesWithResolutions.ElementAt(0).Images.Where(i=>i.width == 263 && i.height == 263).FirstOrDefault() : null,
+                                                                                                                      State = count != 0 ? WebUI.Areas.Administrator.Models.State.saved : WebUI.Areas.Administrator.Models.State.doNothing
+                                                                                                                  })
+                                                                                                                   </li>
+
+                                                                                                                   @for (int index = 1; index <= 11; index++)
+                                                                                                                   {
+                                                                                                                       <li id="add-file-@index" class="fleft empty rel  " data-slot="@index" style="z-index: 0;">
+                                                                                                                           @Html.Partial("_UploadImageTemp", new WebUI.Areas.Administrator.Models.ImageUploadViewModel
+                                                                                                                       {
+                                                                                                                           Id = index,
+                                                                                                                           ProductID = Model.Product.ProductID,
+                                                                                                                           Image = count > index ? Model.Product.ImagesWithResolutions.ElementAt(index).Images.Where(i => i.width == 60 && i.height == 60).FirstOrDefault() : null,
+                                                                                                                           State = count > index ? WebUI.Areas.Administrator.Models.State.saved : WebUI.Areas.Administrator.Models.State.doNothing
+                                                                                                                       })
+                                                                                                                       </li>
+                                                                                                                   }
+                                                                                                               </ul>
+
+                                                                                                               <div class="hidden">
+                                                                                                                   <ul id="hidden-templates">
+                                                                                                                       <li class="fleft with-photo br2 rel hidden" id="with-photo-template">
+                                                                                                                           <div>
+                                                                                                                               <a class="rotate-photo-a icon mini vis rotate abs" title="Изменить фото" href="#" rel="">Изменить фото</a>
+                                                                                                                               <a class="delete-photo-a icon mini vis remove3 abs" title="Удалить" href="#" rel="">Удалить</a>
+                                                                                                                               <img class="" src="" id="" alt="">
+                                                                                                                           </div>
+                                                                                                                       </li>
+
+                                                                                                                       <li id="progress-loader" class="fleft empty progress rel hidden">
+                                                                                                                           <div class="br5">
+                                                                                                                               <span class="icon margin0_a rel progress block">Загрузка</span>
+                                                                                                                           </div>
+                                                                                                                       </li>
+                                                                                                                   </ul>
+                                                                                                               </div>
+
+                                                                                                               <div class="suggest withrightbanner photos marginleft5 abs zi2 br3" id="photo-suggest" style="display: none;">
+                                                                                                                   <span class="target abs icon">&nbsp;</span> <span class="abs icon info2">&nbsp;</span>
+                                                                                                                   <ul class="suggest" style="display: none;">
+                                                                                                                       <li id="stock-photo-suggest" class="hidden">
+                                                                                                                           <p>
+                                                                                                                               <strong>Внимание: только авторские фото!</strong>
+                                                                                                                               Стоковые фото в объявлениях с параметром Частное лицо не допускаются
+                                                                                                                           </p>
+                                                                                                                           <div id="stock-photo-image"></div>
+                                                                                                                       </li>
+                                                                                                                       <li id="first-photo-suggest">
+                                                                                                                           <p class="marginbott5"><strong>Удерживайте Ctrl</strong> чтобы выбрать более одной фотографии.</p>
+                                                                                                                           <p>Максимальный размер файла 5 МБ, формат .jpg, .jpeg, .png, .gif <br>Обратите внимание: указание контактной информации на фото не допускается.</p>
+                                                                                                                       </li>
+                                                                                                                       <li id="second-photo-suggest" class="hidden">Вы можете сортировать изображения просто <strong>перетаскивая их</strong></li>
+                                                                                                                   </ul>
+                                                                                                                   <p style="display: none" class="error"></p>
+                                                                                                               </div>
+                                                                                                           </div>
+                                                                                                       </div>
+                                                                                                   </div>
+                                                                                                   </div><div class="box-footer">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+
+                    @Html.ActionLink("Cansel", "Index", null, new
+               {
+                   @class = "btn btn-default"
+               })
+                </div>
+            </div>
+        </div>
+    }
+    <!-- /.box-body -->
+</div>
+<script>
+
+
+</script>

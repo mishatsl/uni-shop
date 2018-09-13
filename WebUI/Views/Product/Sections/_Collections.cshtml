@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Domain.Entites.Product>
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <!-- shop -->
+            @if (Model.Count() != 0)
+            {
+            for (int i = 0; i < Model.Count() && i < 3; i++)
+            {<div class="col-md-4 col-xs-6">
+                    <div class="shop">
+                        @if (Model.ElementAt(i).
+                            ImagesWithResolutions.
+                            FirstOrDefault().
+                            Images.
+                            FirstOrDefault()
+                            .ImageData != null)
+                        {
+                        <div class="shop-img">
+                            <img src="@Url.Action("GetImage", "Product", new { Model.ElementAt(i).ProductID, width = 263, height = 263 })" alt="" />
+                        </div>
+                        }                      
+                        <div class="shop-body">
+                            <h3>@Model.ElementAt(i).Сategory<br>Collection</h3>
+                            <a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                </div>}
+            }
+
+            <!-- /shop -->
+            
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>

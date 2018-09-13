@@ -1,0 +1,32 @@
+﻿@model IEnumerable<string>
+<div id="breadcrumb" class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumb-tree">
+
+                    @Html.ActionLink("Home", "Index", "Product")
+
+                    @foreach (var link in Model)
+                    {
+                        @Html.RouteLink(link, new
+                        {
+                            Controller = "Product",
+                            Action = "Store",
+                            Сategory = link,
+                            page = 1
+                        },
+                        new
+                        {
+                            @class = (link == ViewBag.SelectedCategory ? "active" : "")
+                        })
+                    }
+                </ul>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>

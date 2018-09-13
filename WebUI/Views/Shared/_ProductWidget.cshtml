@@ -1,0 +1,30 @@
+﻿@model Domain.Entites.CartLine
+
+<div class="product-widget">
+    @Html.HiddenFor(p => p.Product.ProductID)
+    <div class="product-img">
+        <img src="@Url.Action("GetImage","Product",new { ProductId = Model.Product.ProductID, width = 60, height = 60 })" alt="">
+    </div>
+    <div class="product-body">
+        <h3 class="product-name"><a href="#">@Model.Product.Name</a></h3>
+        <h4 class="product-price"><span class="qty">@Model.Quantity.ToString("#x")</span>@Model.Product.Price</h4>
+    </div>
+    @if (Request.Url.LocalPath.ToLower().Contains(@"/Cart/Index"))
+    {
+        using (Html.BeginForm("RemoveFromCart", "Cart"))
+        {
+            @Html.Hidden("ProductID", Model.Product.ProductID)
+            @Html.Hidden(Request.Url.AbsolutePath)
+            <button class="delete" type="submit"><i class="fa fa-close"></i></button>
+        }
+    }
+    else
+    {
+        using (Ajax.BeginForm("RemoveFromCart", "Cart", new AjaxOptions { UpdateTargetId = "dropdown-id" }))
+        {
+            @Html.Hidden("ProductID", Model.Product.ProductID)
+            <button class="delete" type="submit"><i class="fa fa-close"></i></button>
+        }
+    }
+
+</div>

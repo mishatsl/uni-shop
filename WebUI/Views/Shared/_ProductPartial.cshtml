@@ -1,0 +1,41 @@
+﻿
+@model Domain.Entites.Product
+
+
+
+<div class="product-img">
+    <img src="@Url.Action("GetImage","Product", new { Model.ProductID, width = 263, height = 263})" alt="">
+    <div class="product-label">
+        @if (Model.New)
+        {
+            <span class="new">NEW</span>
+        }
+    </div>
+</div>
+<div class="product-body">
+    <p class="product-category">@Model.Сategory</p>
+    <h3 class="product-name">@Html.ActionLink(Model.Name, "Product", "Product", new { Model.ProductID }, new { tabindex = "-1" })</h3>
+    <h4 class="product-price">$@Model.Price<del class="product-old-price">$@Model.PreviousPrice</del></h4>
+    <div class="product-rating">
+        @for (int i = 1; i < Model.ProductRating; i++)
+        {
+            <i class="fa fa-star"></i>
+        }
+    </div>
+    <div class="product-btns">
+        <button class="add-to-wishlist" tabindex="-1"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+        <button class="add-to-compare" tabindex="-1"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+        <button class="quick-view" tabindex="-1"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+    </div>
+</div>
+@using (Html.BeginForm("AddToCart", "Cart"))
+{
+<div class="add-to-cart">
+    @Html.HiddenFor(p => p.ProductID)
+    @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
+    <button type="submit" class="add-to-cart-btn" value="submit"><i class="fa fa-shopping-cart"></i> add to cart</button>
+</div>
+}
+@*<div class="add-to-cart">
+    <button class="add-to-cart-btn" tabindex="-1"><i class="fa fa-shopping-cart"></i> add to cart</button>
+</div>*@
