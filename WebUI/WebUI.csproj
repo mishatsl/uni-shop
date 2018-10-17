@@ -7206,6 +7206,8 @@
     <Content Include="Areas\Administrator\Views\Nav\_navbar-custom-menu.cshtml" />
     <Content Include="Areas\Administrator\Views\Admin\_UploadImageTemp.cshtml" />
     <Content Include="Areas\Administrator\Views\Admin\_UploadMainImageTemp.cshtml" />
+    <Content Include="Areas\Administrator\Views\Navigation\_Sidebar.cshtml" />
+    <Content Include="Areas\Administrator\Views\Navigation\_navbar-custom-menu.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\jquery-3.0.0.js" />
@@ -7239,7 +7241,9 @@
     <Compile Include="Areas\Administrator\AdministratorAreaRegistration.cs" />
     <Compile Include="Areas\Administrator\Controllers\AdminController.cs" />
     <Compile Include="Areas\Administrator\Controllers\NavigationController.cs" />
+    <Compile Include="Areas\Administrator\Models\FilterSideBarViewModel.cs" />
     <Compile Include="Areas\Administrator\Models\ImageUploadViewModel.cs" />
+    <Compile Include="Binders\FilterSideBarBinder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AccountController_Past_ver.cs" />
     <Compile Include="Controllers\AdminController_Past_ver.cs" />
@@ -7276,6 +7280,7 @@
     <Compile Include="Models\ProductWidgetCartModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
+    <Compile Include="Providers\FilterSideBarValueProvider.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -8,6 +8,7 @@ namespace WebUI.Areas.Administrator.Models
     public class ImageUploadViewModel
     {
         public int Id { set; get; }
+        public int index { set; get; }
         public string Name { set; get; }
         public int ProductID { set; get; }
         public State State { set; get; }

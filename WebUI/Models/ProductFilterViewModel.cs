@@ -7,13 +7,13 @@ namespace WebUI.Models
 {
     public class ProductFilterViewModel
     {
-        public IEnumerable<FilterOfCategory> Categories { set; get; }
+        public IList<FilterOfCategory> Categories { set; get; }
         
         public int PriceMin { set; get; }
 
         public int PriceMax { set; get; }
 
-        public IEnumerable<FilterOfBrand> Brands { set; get; }
+        public IList<FilterOfBrand> Brands { set; get; }
     }
 
     public class FilterOfCategory

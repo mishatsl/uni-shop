@@ -33,10 +33,10 @@
             <!-- Product main img -->
             <div class="col-md-5 col-md-push-2">
                 <div id="product-main-img">
-                    @foreach (Domain.Entites.Image image in Model.ImagesWithResolutions.ElementAt(0).Images.Where(i => i.width == 600 && i.height == 600))
+                    @foreach (Domain.Entites.ImagesWithResolutions image in Model.ImagesWithResolutions)
                     {
                         <div class="product-preview">
-                            <img src="@Url.Action("GetImage","Product", new { Model.ProductID,imageId = image.ImageID, width = 600, height = 600})" alt="">
+                            <img src="@Url.Action("GetImage","Product", new { Model.ProductID,imageId = image.ImagesWithResolutionsID, width = 600, height = 600})" alt="">
                         </div>
                     }
                 </div>

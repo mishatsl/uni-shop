@@ -64,16 +64,19 @@ $(function () {
         $.ajax({
             type: "POST",
             url: '/admin/DeleteTemp/',
-            //beforeSend: function (jqXHR, settings) {
-            //    $this.siblings("a").children('.photos-show-mini a i').css({ 'display': 'none' });
-            //    $this.siblings("a").children('.lds-roller').css({ 'display': 'inline-block' });
-            //    $this.siblings("a").append('<a class="delete-photo-a icon mini vis remove3 abs" title="Удалить" href="#" rel="1">Delete</a>');
+            beforeSend: function (jqXHR, settings) {
+               // $State.attr('value', 'delete');
+                //    $this.siblings("a").children('.photos-show-mini a i').css({ 'display': 'none' });
+                //    $this.siblings("a").children('.lds-roller').css({ 'display': 'inline-block' });
+                //    $this.siblings("a").append('<a class="delete-photo-a icon mini vis remove3 abs" title="Удалить" href="#" rel="1">Delete</a>');
+            },
 
             data: fileName,
             success: function (result) {
                 $br5.removeClass("loaded");
                 $br5.removeClass("loadeding");
-                $State.attr('value', 1);
+                if ($State.attr('value') === 'saved' || $State.attr('value') === 'update')
+                    $State.attr('value', 'delete');
                 //$this.siblings('a').children('img').hide();
                 //$this.siblings("a").children('.lds-roller').hide();
                 //$this.siblings("a").children('.photos-show-mini a i').show();
@@ -142,7 +145,8 @@ $(function () {
                                 var ctx = canvas.getContext("2d");
                                 ctx.drawImage(img, 0, 0, width, height);
                                 var dataurl = canvas.toDataURL();
-                                var tempFile = dataURLtoFile(dataurl, myID + "_" + Date.now() + '.png');
+                                var photoIndex = $this.parents('li').attr('data-slot');
+                                var tempFile = dataURLtoFile(dataurl, photoIndex + "_" + Date.now() + '.png');
                                 var data = new FormData();
 
                                 data.append("file", tempFile);
@@ -155,6 +159,7 @@ $(function () {
                                         //$this.siblings("a").children('.photos-show-mini a i').hide();
                                         //$this.siblings("a").children('.lds-roller').show();
                                         //$this.siblings('a').children('img').hide();
+                                        //$State.attr('value', 'add');
                                         $br5.removeClass("loaded");
                                         $br5.addClass("loading");
                                     },
@@ -180,10 +185,12 @@ $(function () {
                                         // $this.siblings("a").children('.lds-roller').css({ 'display': 'inline-block' });
                                         $br5.toggleClass("loading");
                                         $br5.toggleClass("loaded");
-                                        if ($State.attr('value') == 3)
-                                            $State.attr('value', 0);
-                                        else
-                                            $State.attr('value', 2);
+                                        if ($State.attr('value') === 'doNothing')
+                                            $State.attr('value', 'add');
+                                        else if ($State.attr('value') === 'saved')
+                                            $State.attr('value', 'update');
+                                        //else
+                                        //    $State.attr('value', 'add');
                                     },
                                     error: function (xhr, status, p3, p4) {
                                         var err = "Error " + " " + status + " " + p3 + " " + p4;
@@ -209,6 +216,31 @@ $(function () {
     });
 
 
+$(window).on('reload', function (e) {
+
+    var href = window.location.href;
+
+    if (href.includes('product//product')) {
+        var IsChangedForm = false;
+        $('.form-group input, #txtUploadFile, ').each(function (input) {
+            if (input.value == input.defaultValue) {
+                alert("Please change field.");
+                IsChangedForm = true;
+            }
+        });
+        if (IsChangedForm) {
+            var reload = confirm("There are not saved data. Are you sure you want reload this page!");
+            if (reload) {
+                e.preventDefault();
+                window.location.href = href;
+            }
+            else {
+                e.preventDefault();
+                return;
+            }
+        }
+    }
+    });
 
 function LineDeletedSuccess(ProductID)
 {

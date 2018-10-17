@@ -1,73 +1,80 @@
 ﻿@model WebUI.Models.ProductFilterViewModel
-@using (Ajax.BeginForm("Store","Product", new AjaxOptions { HttpMethod = "GET" }))
+@using (Ajax.BeginForm("Store", "Product", new AjaxOptions { HttpMethod = "GET" }))
 {
-    <div id="aside" class="col-md-3">
-        <!-- aside Widget -->
-        <div class="aside">
-            <h3 class="aside-title">Categories</h3>
-            <div class="checkbox-filter">
-
-                @foreach (var categoryFilter in Model.Categories)
-                {
-                    <div class="input-checkbox">
-
-                        @Html.CheckBoxFor(modelItem => categoryFilter.IsChecked, new { id = categoryFilter.Category , onchange = "this.form.submit();" })
-                        <label for="@categoryFilter.Category">
-                            <span></span>
-                            @categoryFilter.Category
-                            <small>(@categoryFilter.CountOfProducts)</small>
-                        </label>
-                    </div>
-                    }
-
-            </div>
-        </div>
-        <!-- /aside Widget -->
-        <!-- aside Widget -->
-        <div class="aside">
-            <h3 class="aside-title">Price</h3>
-            <div class="price-filter">
-                <div id="price-slider" class="noUi-target noUi-ltr noUi-horizontal"><div class="noUi-base"><div class="noUi-origin" style="left: 0%;"><div class="noUi-handle noUi-handle-lower" data-handle="0" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="0.0" aria-valuemax="100.0" aria-valuenow="0.0" aria-valuetext="1.00" style="z-index: 5;"></div></div><div class="noUi-connect" style="left: 0%; right: 0%;"></div><div class="noUi-origin" style="left: 100%;"><div class="noUi-handle noUi-handle-upper" data-handle="1" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="0.0" aria-valuemax="100.0" aria-valuenow="100.0" aria-valuetext="999.00" style="z-index: 4;"></div></div></div></div>
-                <div class="input-number price-min">
-                    @Html.TextBoxFor(modelItem => modelItem.PriceMin, new { id = "price-min", type = "number" })
-                    <span class="qty-up">+</span>
-                    <span class="qty-down">-</span>
+<div id="aside" class="col-md-3">
+    <!-- aside Widget -->
+    <div class="aside">
+        <h3 class="aside-title">Categories</h3>
+        <div class="checkbox-filter">
+            @for (int i = 0; i < Model.Categories.Count(); i++)
+            {
+                <div class="input-checkbox">
+                    @Html.CheckBoxFor(model => Model.Categories[i].IsChecked, new
+               {
+                   id = "category-" + Model.Categories[i].Category,
+                   onchange = "this.form.submit();"
+               })
+                    <input type="checkbox" id="category-@i">
+                    <label for="category-@Model.Categories[i].Category">
+                        <span></span>
+                         @Html.HiddenFor(m => m.Categories[i].Category)
+                         @Model.Categories[i].Category
+                        <small>(@Model.Categories[i].CountOfProducts)</small>
+                    </label>
                 </div>
-                <span>-</span>
-                <div class="input-number price-max">
-                    @Html.TextBoxFor(modelItem => modelItem.PriceMax, new { id = "price-max", type = "number" })
-                    <span class="qty-up">+</span>
-                    <span class="qty-down">-</span>
-                </div>
-            </div>
-            <input type="submit" value="OK"/>
+            }
+
+
         </div>
-        <!-- /aside Widget -->
-        <!-- aside Widget -->
-        <div class="aside">
-            <h3 class="aside-title">Brand</h3>
-            <div class="checkbox-filter">
-                @foreach (var brandFilter in Model.Brands)
-                {
-                    <div class="input-checkbox">
-                        @Html.CheckBoxFor(modelItem => brandFilter.IsChecked, new
-                   {
-                       id = "brand-" + brandFilter.Brand,
-                       onchange = "this.form.submit();"
-                   })
-                        <input type="checkbox" id="brand-1">
-                        <label for="brand-@brandFilter.Brand">
-                            <span></span>
-                            @brandFilter.Brand
-                            <small>(@brandFilter.CountOfProducts)</small>
-                        </label>
-                    </div>
-                }
-
-
-            </div>
-        </div>
-
-
     </div>
+    
+    <!-- /aside Widget -->
+    <!-- aside Widget -->
+    <div class="aside">
+        <h3 class="aside-title">Price</h3>
+        <div class="price-filter">
+            <div id="price-slider"></div>
+            <div class="input-number price-min">
+                @Html.TextBoxFor(modelItem => modelItem.PriceMin, new { id = "price-min", type = "number" })
+                <span class="qty-up">+</span>
+                <span class="qty-down">-</span>
+            </div>
+            <span>-</span>
+            <div class="input-number price-max">
+                @Html.TextBoxFor(modelItem => modelItem.PriceMax, new { id = "price-max", type = "number" })
+                <span class="qty-up">+</span>
+                <span class="qty-down">-</span>
+            </div>
+        </div>
+        <input type="submit" onclick="this.form.submit()" value="OK" />
+    </div>
+    <!-- /aside Widget -->
+    <!-- aside Widget -->
+    <div class="aside">
+        <h3 class="aside-title">Brand</h3>
+        <div class="checkbox-filter">
+            @for (int i = 0; i < Model.Brands.Count(); i++)
+            {
+                <div class="input-checkbox">
+                    @Html.CheckBoxFor(model => Model.Brands[i].IsChecked, new
+               {
+                   id = "brand-" + Model.Brands.ElementAt(i).Brand,
+                   onchange = "this.form.submit();"
+               })
+                    <input type="checkbox" id="brand-1">
+                    <label for="brand-@Model.Brands[i].Brand" >
+                        <span></span>
+                        @Html.HiddenFor(m => m.Brands[i].Brand)
+                       @Model.Brands.ElementAt(i).Brand
+                        <small>(@Model.Brands[i].CountOfProducts)</small>
+                    </label>
+                </div>
+            }
+
+
+        </div>
+    </div>
+
+
+</div>
 }

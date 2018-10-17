@@ -95,8 +95,9 @@ namespace WebUI.Controllers
                         CurrentPage = page,
                         ItemsPerPage = pageSize,
                         TotalItems = productRepository.products.Count()
-                    },
-                    productFilterViewModel = new ProductFilterViewModel()
+                    }
+                  //  productFilterViewModel = productFilterViewModel
+                    
                 };
 }
            
@@ -180,20 +181,30 @@ namespace WebUI.Controllers
 
         public FileContentResult GetImage(int ProductID, int width, int height, int imageId = -1)
         {
-            Product product = productRepository.products.Where(m => m.ProductID == ProductID).FirstOrDefault();
+            Product product = productRepository.products.FirstOrDefault(m => m.ProductID == ProductID);
             if (product != null)
             {
-                Image image;
-                if (imageId!=-1)
-                    image = product.ImagesWithResolutions.Where(i => i.ImagesWithResolutionsID == imageId).FirstOrDefault().Images.Where(i => i.width == width && i.height == height).FirstOrDefault();
-                else
-                    image = product.ImagesWithResolutions.FirstOrDefault().Images.FirstOrDefault();
-                return File(image.ImageData, image.ImageMimeType);
+                Domain.Entites.Image image;
+                if (imageId == -1)
+                {
+                    image = product.ImagesWithResolutions.FirstOrDefault().Images.FirstOrDefault(i => i.width == width && i.height == height);
+                }
+                else if (imageId < 0)
+                {
+                    return null;
+                }
+                else// if (imageId < product.ImagesWithResolutions.Count())
+                {
+                    image = product.ImagesWithResolutions.FirstOrDefault(i => i.ImagesWithResolutionsID == imageId).Images.FirstOrDefault(i => i.width == width && i.height == height);
+                }
+                //else
+                //{
+                //    image = null;
+                //}
+                if (image != null)
+                    return File(image.ImageData, image.ImageMimeType);
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
         //public FileContentResult GetAdditionalImage(int ProductID,int index)
         //{

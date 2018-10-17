@@ -11,7 +11,10 @@ namespace Domain.Abstarct
     public interface IProductRepository
     {
         IEnumerable<Product> products { get; }
-        void SaveProduct(Product product);
-        Product DeleteProduct(int ProductId);
+        Task SaveProduct(Product product);
+        Task<Product> DeleteProduct(int ProductId);
+        Task<ImagesWithResolutions> DeleteImagesWithResolutions(int ProductID, int ImageID);
+        Task<ImagesWithResolutions> UpdateImagesWithResolutions(int ProductID, int ImageID, ImagesWithResolutions imagesWithResolutions);
+        Task SaveImagesWithResolutions(int ProductID, ImagesWithResolutions imagesWithResolutions);
     }
 }

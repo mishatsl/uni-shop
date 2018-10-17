@@ -1,4 +1,4 @@
-﻿@model IEnumerable<string>
+﻿@model WebUI.Areas.Administrator.Models.FilterSideBarViewModel
 <!-- Sidebar user panel -->
 <div class="user-panel">
     <div class="pull-left image">
@@ -24,6 +24,36 @@
 <!-- sidebar menu: : style can be found in sidebar.less -->
 <ul class="sidebar-menu tree" data-widget="tree">
     <li class="header">MAIN NAVIGATION</li>
+    <li>
+
+        @Html.RouteLink("All Products", new
+        {
+            Controller = "Admin",
+            Action = "Index"
+        })
+    </li>
+
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-dashboard"></i> <span>Categories</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+
+
+            @foreach (var category in Model.Categories)
+            {
+                <li>
+                    <a href="@Url.Action("Index","Admin",new { category = category, page = 1 })">
+                        <i class="fa fa-circle-o">
+                        </i> @category
+                    </a>
+                </li>
+            }
+        </ul>
+    </li>
     <li class="treeview">
         <a href="#">
             <i class="fa fa-dashboard"></i> <span>Brands</span>
@@ -32,29 +62,16 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            <li>
-                <i class="fa fa-circle-o"></i>
-                @Html.RouteLink("All categories", new
-                {
-                    Controller = "Admin",
-                    Action = "Index"
-                })
-            </li>
-            @foreach (var category in Model)
+
+
+            @foreach (var brand in Model.Brands)
             {
-                <li>
-                    <i class="fa fa-circle-o"></i>
-                    @Html.RouteLink(category, new
-               {
-                   Controller = "Admin",
-                   Action = "Index",
-                   category = category,
-                   page = 1
-               })
-                </li>
+            <li>
+                <a href="@Url.Action("Index","Admin",new { brand = brand, page = 1 })">
+                <i class="fa fa-circle-o">
+                    </i> @brand</a>
+            </li>
             }
-            <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-            <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
         </ul>
     </li>
     <li>

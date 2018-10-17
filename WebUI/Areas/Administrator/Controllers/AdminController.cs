@@ -40,63 +40,47 @@ namespace WebUI.Areas.Administrator.Controllers
             List<State> states = new List<State>();
             for (int i = 0; i < 12; i++)
                 states.Add(State.doNothing);
-            return View(new UploadProductViewModel { States = states, Product = product});
+            return View(new UploadProductViewModel { States = states, Product = product });
         }
 
         [HttpPost]
-        public ActionResult Edit(UploadProductViewModel UploadProductViewModel)
+        public async Task<ActionResult> Edit(UploadProductViewModel UploadProductViewModel)
         {
             if (ModelState.IsValid)
             {
                 ImagesWithResolutions ImagesWithResolutions = new ImagesWithResolutions();
-                //DirectoryInfo d = new DirectoryInfo(Server.MapPath("~/temp/"));//Assuming Test is your Folder
-                //FileInfo[] Files = d.GetFiles("*.png"); 
-                //byte[] image;
-                //foreach (FileInfo file in Files)
+
                 string[] Files = Directory.GetFiles(Server.MapPath("~/temp/"));
-                //foreach (string fileName in Files)
-                //{
-                //    using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-                //    {
-                //        using (var reader = new BinaryReader(stream))
-                //        {
-                //            image = reader.ReadBytes((int)stream.Length);
-                //        }
-                //    }
-                //    if (image != null)
-                //    {
-
-
-                //        System.Drawing.Image tempImage = byteArrayToImage(image);
-
-                //        //ImagesWithResolutions = new ImagesWithResolutions();
-                //        ImagesWithResolutions = MakeImages(ImagesWithResolutions);
-                        
-                        
-                //    }
-                //}
-
-                int FileIndex = 0;
+                List<State> LStates = UploadProductViewModel.States.ToList();
                 Product currentProduct = productRepository.products.FirstOrDefault(p => p.ProductID == UploadProductViewModel.Product.ProductID);
-                List<ImagesWithResolutions> LImagesWithResolutions = currentProduct.ImagesWithResolutions.ToList();
-
-                for ( int i = 0; i < UploadProductViewModel.States.Count(); i++)
+                if(currentProduct == null)
                 {
-                    switch(UploadProductViewModel.States.ElementAt(i))
+                    currentProduct = new Product();
+                }
+                List<ImagesWithResolutions> LImagesWithResolutions = currentProduct.ImagesWithResolutions.ToList();
+                int CountFiles = 0;
+                for (int i = 0; i < LStates.Count(); i++)
+                {
+                    switch (LStates[i])
                     {
                         case State.add:
-                            LImagesWithResolutions.Add(MakeImages(Files[FileIndex++]));
+                            if (Files.Length > 0 && CountFiles < Files.Length)
+                            {
+                                deleteTempImg(Files[CountFiles]);
+                                await productRepository.SaveImagesWithResolutions(currentProduct.ProductID, MakeImages(Files[CountFiles++]));
+                            }
+
                             break;
 
                         case State.delete:
-                            foreach (var Image in LImagesWithResolutions[i].Images.ToList())
-                                LImagesWithResolutions[i].Images.Remove(Image);
-                            LImagesWithResolutions
-                                 .Remove(currentProduct.ImagesWithResolutions.ElementAt(i));
+                            await productRepository.DeleteImagesWithResolutions(currentProduct.ProductID, currentProduct.ImagesWithResolutions.ElementAt(i).ImagesWithResolutionsID);
+                            LStates.RemoveAt(i);
+                            --i;
                             break;
 
                         case State.update:
-                                LImagesWithResolutions[i] = MakeImages(Files[FileIndex++]);
+                            deleteTempImg(Files[CountFiles]);
+                            await productRepository.UpdateImagesWithResolutions(currentProduct.ProductID, currentProduct.ImagesWithResolutions.ElementAt(i).ImagesWithResolutionsID, MakeImages(Files[CountFiles++]));
                             break;
                         case State.saved:
                         case State.doNothing:
@@ -104,108 +88,138 @@ namespace WebUI.Areas.Administrator.Controllers
                     }
                 }
 
-                UploadProductViewModel.Product.ImagesWithResolutions = LImagesWithResolutions;
-                productRepository.SaveProduct(UploadProductViewModel.Product);
+
+
+                UploadProductViewModel.Product.ImagesWithResolutions = currentProduct.ImagesWithResolutions;
+
+             
+
+                await productRepository.SaveProduct(UploadProductViewModel.Product);
+
+
 
                 string filePath = Server.MapPath("~/temp/");
                 Array.ForEach(Directory.GetFiles(filePath), System.IO.File.Delete);
-
+                UploadProductViewModel.Product = productRepository.products.FirstOrDefault(p => p.ProductID == currentProduct.ProductID);
+                if(UploadProductViewModel.Product == null)
+                {
+                    UploadProductViewModel.Product = productRepository.products.OrderBy(p => p.ProductID).LastOrDefault();
+                }
                 TempData["message"] = string.Format("Changes in the product \"{0}\" was change!", UploadProductViewModel.Product.Name);
-               // return RedirectToAction("Index");
+
             }
-            //else
-                return View(UploadProductViewModel);
+
+
+            return View(UploadProductViewModel);
         }
 
+
+        void deleteTempImg(string fileName = "All")
+        {
+            string filePath = Server.MapPath("~/temp/");
+            string[] files = Directory.GetFiles(filePath);
+            if (fileName != "All")
+            {
+               string[] delFiles =  files.Where(f => (f.Split('\\').Last().Contains(fileName.Split('_')[0] + "_")) && (!f.Contains(fileName))).ToArray();
+                Array.ForEach(delFiles, System.IO.File.Delete);
+            }
+            else
+            { 
+                Array.ForEach(Directory.GetFiles(filePath), System.IO.File.Delete);
+            }
+        }
 
         private ImagesWithResolutions MakeImages(string fileName)
         {
             byte[] image;
             //foreach (FileInfo file in Files)
             ImagesWithResolutions ImagesWithResolutions = new ImagesWithResolutions();
-                using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                using (var reader = new BinaryReader(stream))
                 {
-                    using (var reader = new BinaryReader(stream))
-                    {
-                        image = reader.ReadBytes((int)stream.Length);
-                    }
+                    image = reader.ReadBytes((int)stream.Length);
                 }
-                if (image != null)
+            }
+            if (image != null)
+            {
+
+                System.Drawing.Image tempImage = byteArrayToImage(image);
+
+               
+                ImagesWithResolutions.Images.Add(new Domain.Entites.Image
                 {
+                    alt = fileName,
+                    ImageData = this.imageToByteArray(tempImage),
+                    ImageMimeType = "image/png",
+                    width = 600,
+                    height = 600
+                });
+                ImagesWithResolutions.Images.Add(new Domain.Entites.Image
+                {
+                    alt = fileName,
+                    ImageData = this.imageToByteArray(tempImage),
+                    ImageMimeType = "image/png",
+                    width = 263,
+                    height = 263
 
+                });
+                ImagesWithResolutions.Images.Add(new Domain.Entites.Image
+                {
+                    alt = fileName,
+                    ImageData = this.imageToByteArray(tempImage),
+                    ImageMimeType = "image/png",
+                    width = 60,
+                    height = 60
+                });
 
-                    System.Drawing.Image tempImage = byteArrayToImage(image);
+            }
 
-                    //ImagesWithResolutions = new ImagesWithResolutions();
-
-                    ImagesWithResolutions.Images.Add(new Domain.Entites.Image
-                    {
-                        alt = "",
-                        ImageData = this.imageToByteArray(ResizeImage(tempImage, 600, 600)),
-                        ImageMimeType = "image/png",
-                        width = 600,
-                        height = 600
-                    });
-                    ImagesWithResolutions.Images.Add(new Domain.Entites.Image
-                    {
-                        alt = "",
-                        ImageData = this.imageToByteArray(ResizeImage(tempImage, 263, 263)),
-                        ImageMimeType = "image/png",
-                        width = 263,
-                        height = 263
-
-                    });
-                    ImagesWithResolutions.Images.Add(new Domain.Entites.Image
-                    {
-                        alt = "",
-                        ImageData = this.imageToByteArray(ResizeImage(tempImage, 60, 60)),
-                        ImageMimeType = "image/png",
-                        width = 60,
-                        height = 60
-                    });
-
-                }
-            
 
             return ImagesWithResolutions;
         }
 
 
-        
+
         [HttpPost]
         public ActionResult UploadTemp(string id)
         {
             string fileName = null;
             ImageUploadViewModel imageUploadViewModel = null;
+
             try
             {
 
                 foreach (string file in Request.Files)
                 {
-                    
+                   
                     var fileContent = Request.Files[file];
                     if (fileContent != null && fileContent.ContentLength > 0)
                     {
                         // get a stream
-                        var stream = fileContent.InputStream;
-                        // and optionally write the file to disk
-                        fileName = fileContent.FileName;//Path.GetExtension(file);
-                        string filePath = Server.MapPath("~/temp/");
-                        if ((System.IO.File.Exists(filePath + fileName)))
+                        using (var stream = fileContent.InputStream)
                         {
-                            System.IO.File.Delete(filePath + fileName);
+                            // and optionally write the file to disk
+                            fileName = fileContent.FileName;//Path.GetExtension(file);
+                            string filePath = Server.MapPath("~/temp/");
+                            if ((System.IO.File.Exists(filePath + fileName)))
+                            {
+                                System.IO.File.Delete(filePath + fileName);
+                            }
+                            ViewBag.fileName = fileName;
+                            var path = Path.Combine(Server.MapPath("~/temp/"), fileName);
+                            using (var fileStream = System.IO.File.Create(path))
+                            {
+                                stream.CopyTo(fileStream);
+                            }
+                            imageUploadViewModel = new ImageUploadViewModel
+                            {
+                                Id = Convert.ToInt32(id),
+                                Name = fileName
+                            };
+
+                            deleteTempImg(fileName);
                         }
-                        ViewBag.fileName = fileName;
-                        var path = Path.Combine(Server.MapPath("~/temp/"), fileName);
-                        using (var fileStream = System.IO.File.Create(path))
-                        {
-                            stream.CopyTo(fileStream);
-                        }
-                        imageUploadViewModel = new ImageUploadViewModel
-                        {
-                            Id = Convert.ToInt32(id),
-                            Name = fileName
-                        };
                     }
                 }
 
@@ -214,7 +228,7 @@ namespace WebUI.Areas.Administrator.Controllers
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
             }
-            //if(id == "0")
+            //if (id == "0")
             //    return PartialView("_UploadMainImageTemp", imageUploadViewModel);
             //else
             //    return PartialView("_UploadImageTemp", imageUploadViewModel);
@@ -225,6 +239,7 @@ namespace WebUI.Areas.Administrator.Controllers
         [HttpPost]
         public ActionResult DeleteTemp(string fileName)
         {
+            deleteTempImg(fileName);
             if ((System.IO.File.Exists(Server.MapPath("~/temp/") + fileName)))
             {
                 System.IO.File.Delete(Server.MapPath("~/temp/") + fileName);
@@ -238,15 +253,15 @@ namespace WebUI.Areas.Administrator.Controllers
         //{
         //    System.Drawing.Image tempImage = byteArrayToImage(new byte[image.ContentLength]);
 
-            //    tempImage.Save(,"~/temp/temp_image.png");
-            //    return View(productRepository.products);
-            //}
+        //    tempImage.Save(,"~/temp/temp_image.png");
+        //    return View(productRepository.products);
+        //}
 
         [HttpPost]
-        public ActionResult Delete(int ProductID)
+        public async Task<ActionResult> Delete(int ProductID)
         {
 
-            Product deletedProduct = productRepository.DeleteProduct(ProductID);
+            Product deletedProduct = await productRepository.DeleteProduct(ProductID);
             if (deletedProduct != null)
             {
                 TempData["message"] = string.Format("Книга \"{0}\" была удалена!", deletedProduct.Name);
@@ -256,24 +271,31 @@ namespace WebUI.Areas.Administrator.Controllers
 
 
 
-        public ViewResult Create(Product Product)
+        public ViewResult Create()
         {
             ViewBag.Title = "Add";
             Array.ForEach(Directory.GetFiles(Server.MapPath("~/temp/")), System.IO.File.Delete);
-            return View("Edit", new Product());
+            return View("Edit", new UploadProductViewModel { Product = new Product()});
         }
 
         public byte[] imageToByteArray(System.Drawing.Image imageIn)
         {
-            MemoryStream ms = new MemoryStream();
-            imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-            return ms.ToArray();
+            byte[] arr;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                arr = ms.ToArray();
+            }
+            return arr;
         }
 
         public System.Drawing.Image byteArrayToImage(byte[] byteArrayIn)
         {
-            MemoryStream ms = new MemoryStream(byteArrayIn);
-            System.Drawing.Image returnImage = System.Drawing.Image.FromStream(ms);
+            System.Drawing.Image returnImage;
+            using (MemoryStream ms = new MemoryStream(byteArrayIn))
+            {
+                returnImage = System.Drawing.Image.FromStream(ms);
+            }
             return returnImage;
         }
 
@@ -309,16 +331,29 @@ namespace WebUI.Areas.Administrator.Controllers
             if (product != null)
             {
                 Domain.Entites.Image image;
-                if (imageId != -1)
-                    image = product.ImagesWithResolutions.Where(i => i.ImagesWithResolutionsID == imageId).FirstOrDefault().Images.Where(i => i.width == width && i.height == height).OrderBy(i => i.ImageID).ElementAt(imageId);
-                else
-                    image = product.ImagesWithResolutions.FirstOrDefault().Images.FirstOrDefault();
-                return File(image.ImageData, image.ImageMimeType);
+                if (imageId == -1)
+                {
+                    image = product.ImagesWithResolutions.FirstOrDefault().Images.FirstOrDefault(i => i.width == width && i.height == height);
+                }
+                else if (imageId < 0)
+                {
+                    return null;
+                }
+                else// if (imageId < product.ImagesWithResolutions.Count())
+                {
+                    ImagesWithResolutions imagesWithResolutions =  product.ImagesWithResolutions.FirstOrDefault(i => i.ImagesWithResolutionsID == imageId);
+                    image = imagesWithResolutions.Images.FirstOrDefault(i => i.width == width && i.height == height);
+                    //.Images.FirstOrDefault(i => i.width == width && i.height == height);
+                   // image = null;
+                }
+                //else
+                //{
+                //    image = null;
+                //}
+                if (image != null)
+                    return File(image.ImageData, image.ImageMimeType);
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
     }
 }

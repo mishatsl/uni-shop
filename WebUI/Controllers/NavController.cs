@@ -25,100 +25,145 @@ namespace WebUI.Controllers
         {
             if (productFilterViewModel == null || productFilterViewModel.Categories == null || productFilterViewModel.Brands == null)
             {
+                productFilterViewModel = new ProductFilterViewModel();
+
                 List<string> LBrands = productRepository.products.Select(p => p.Brand).Distinct().ToList();
                 List<string> LCategories = productRepository.products.Select(p => p.Сategory).Distinct().ToList();
                 List<FilterOfBrand> filterOfBrands = new List<FilterOfBrand>();
                 List<FilterOfCategory> filterOfCategory = new List<FilterOfCategory>();
-                foreach (string brand in LBrands)
+                for (int i = 0; i < LBrands.Count(); i++)
                 {
                     filterOfBrands.Add(
                         new FilterOfBrand
                         {
-                            Brand = brand,
+                            Brand = LBrands[i],
                             CountOfProducts = productRepository.products.Select(p => p.Brand).Count(),
                             IsChecked = false
                         }
                         );
                 }
-                foreach (string category in LCategories)
+                for (int i = 0; i < LCategories.Count(); i++)
                 {
                     filterOfCategory.Add(
                         new FilterOfCategory
                         {
-                            Category = category,
+                            Category = LCategories[i],
                             CountOfProducts = productRepository.products.Select(p => p.Сategory).Count(),
                             IsChecked = false
                         }
                         );
                 }
+                int pMax = productFilterViewModel.PriceMax;
+                int pMin = productFilterViewModel.PriceMin;
                 productFilterViewModel = new ProductFilterViewModel
                 {
                     Brands = filterOfBrands,
                     Categories = filterOfCategory,
-                    PriceMax = 10000,
-                    PriceMin = 1
+                    PriceMax = pMax,
+                    PriceMin = pMin
                 };
-            }
-
-            return PartialView(productFilterViewModel);
-
-
-        }
-        // GET: Nav
-        //public PartialViewResult Menu( string genre = null,bool horizontalNav = false)
-        //{
-        //    ViewBag.SelectedGenre = genre;
-
-        //    IEnumerable<string> genres = repository.Books.Select(x => x.Genre).Distinct().OrderBy(x=>x);
-
-        //    return PartialView("FlexMenu", genres);
-        //}
-
-        public PartialViewResult BreadCrumb(string Category = null)
-        {
-            ViewBag.SelectedCategory = Category;
-            IEnumerable<string> RouteCategory = Request.QueryString.AllKeys;
-
-            return PartialView("_BreadCrumb", RouteCategory);
-        }
-
-        public PartialViewResult Menu(string Category = null)
-        {
-            ViewBag.SelectedCategory = Category;
-            IEnumerable<string> Categories = productRepository.products.Select(c => c.Сategory).Distinct().OrderBy(x => x);
-
-            return PartialView("_Menu", Categories);
-        }
-
-        public PartialViewResult Header(Cart cart, string Category = null)
-        {
-            //    ViewBag.SelectedCategory = Category;
-            HeaderViewModel headerViewModel = new HeaderViewModel
-            {
-                cart = cart,
-                Categories = productRepository.products.Select(c => c.Сategory).Distinct().OrderBy(x => x)
-            };
-            return PartialView("_Header", headerViewModel);
-        }
-
-        public ActionResult AutocompleteSearch(string term, string Category = null)
-        {
-
-
-            if (Category == null)
-            {
-                var models = productRepository.products.Where(p => p.Name.Contains(term)).Select(p => new { value = p.Name }).
-                Distinct();
-                return Json(models, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var models = productRepository.products.Where(p => p.Name.Contains(term) && p.Сategory == Category).Select(p => new { value = p.Name }).
-                Distinct();
-                return Json(models, JsonRequestBehavior.AllowGet);
+                ProductFilterViewModel productFilterViewModel_2 = new ProductFilterViewModel();
+
+                List<string> LBrands = productRepository.products.Select(p => p.Brand).Distinct().ToList();
+                List<string> LCategories = productRepository.products.Select(p => p.Сategory).Distinct().ToList();
+                List<FilterOfBrand> filterOfBrands = new List<FilterOfBrand>();
+                List<FilterOfCategory> filterOfCategory = new List<FilterOfCategory>();
+                for (int i = 0; i < LBrands.Count(); i++)
+                {
+                    filterOfBrands.Add(
+                        new FilterOfBrand
+                        {
+                            Brand = productFilterViewModel.Brands[i].Brand ?? LBrands[i],
+                            CountOfProducts = productRepository.products.Select(p => p.Brand).Count(),
+                            IsChecked = productFilterViewModel.Brands[i].IsChecked
+                        }
+                        );
+                }
+                for (int i = 0; i < LCategories.Count(); i++)
+                {
+                    filterOfCategory.Add(
+                        new FilterOfCategory
+                        {
+                            Category = productFilterViewModel.Categories[i].Category ?? LCategories[i],
+                            CountOfProducts = productRepository.products.Select(p => p.Сategory).Count(),
+                            IsChecked = productFilterViewModel.Categories[i].IsChecked
+                        }
+                        );
+                }
+                int pMax = productFilterViewModel.PriceMax;
+                int pMin = productFilterViewModel.PriceMin;
+                productFilterViewModel_2 = new ProductFilterViewModel
+                {
+                    Brands = filterOfBrands,
+                    Categories = filterOfCategory,
+                    PriceMax = pMax,
+                    PriceMin = pMin
+                };
+                productFilterViewModel = productFilterViewModel_2;
             }
 
+                return PartialView(productFilterViewModel);
 
+
+            }
+            // GET: Nav
+            //public PartialViewResult Menu( string genre = null,bool horizontalNav = false)
+            //{
+            //    ViewBag.SelectedGenre = genre;
+
+            //    IEnumerable<string> genres = repository.Books.Select(x => x.Genre).Distinct().OrderBy(x=>x);
+
+            //    return PartialView("FlexMenu", genres);
+            //}
+
+            public PartialViewResult BreadCrumb(string Category = null)
+            {
+                ViewBag.SelectedCategory = Category;
+                IEnumerable<string> RouteCategory = Request.QueryString.AllKeys;
+
+                return PartialView("_BreadCrumb", RouteCategory);
+            }
+
+            public PartialViewResult Menu(string Category = null)
+            {
+                ViewBag.SelectedCategory = Category;
+                IEnumerable<string> Categories = productRepository.products.Select(c => c.Сategory).Distinct().OrderBy(x => x);
+
+                return PartialView("_Menu", Categories);
+            }
+
+            public PartialViewResult Header(Cart cart, string Category = null)
+            {
+                //    ViewBag.SelectedCategory = Category;
+                HeaderViewModel headerViewModel = new HeaderViewModel
+                {
+                    cart = cart,
+                    Categories = productRepository.products.Select(c => c.Сategory).Distinct().OrderBy(x => x)
+                };
+                return PartialView("_Header", headerViewModel);
+            }
+
+            public ActionResult AutocompleteSearch(string term, string Category = null)
+            {
+
+
+                if (Category == null)
+                {
+                    var models = productRepository.products.Where(p => p.Name.Contains(term)).Select(p => new { value = p.Name }).
+                    Distinct();
+                    return Json(models, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    var models = productRepository.products.Where(p => p.Name.Contains(term) && p.Сategory == Category).Select(p => new { value = p.Name }).
+                    Distinct();
+                    return Json(models, JsonRequestBehavior.AllowGet);
+                }
+
+
+            }
         }
     }
-}
