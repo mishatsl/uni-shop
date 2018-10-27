@@ -14,10 +14,16 @@ namespace WebUI
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                null,
-                "",
-                 defaults: new { controller = "Product", action = "Index"}
+                name: "Default",
+                url: "{controller}/{action}/{*param}",
+                defaults: new { controller = "Product", action = "Index" }
                 );
+
+            //routes.MapRoute(
+            //    null,
+            //    "",
+            //     defaults: new { controller = "Product", action = "Index"}
+            //    );
             //routes.MapRoute(
             //      null,
             //      "{controller}/{action}" 

@@ -7,13 +7,13 @@ namespace WebUI.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class second : IMigrationMetadata
+    public sealed partial class cascade_delete : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(second));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(cascade_delete));
         
         string IMigrationMetadata.Id
         {
-            get { return "201807060649081_second"; }
+            get { return "201810231249392_cascade_delete"; }
         }
         
         string IMigrationMetadata.Source

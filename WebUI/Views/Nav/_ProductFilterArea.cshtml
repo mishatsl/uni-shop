@@ -1,5 +1,5 @@
 ﻿@model WebUI.Models.ProductFilterViewModel
-@using (Ajax.BeginForm("Store", "Product", new AjaxOptions { HttpMethod = "GET" }))
+@using (Html.BeginForm("Store", "Product"))
 {
 <div id="aside" class="col-md-3">
     <!-- aside Widget -->
@@ -22,7 +22,7 @@
                         <small>(@Model.Categories[i].CountOfProducts)</small>
                     </label>
                 </div>
-            }
+                }
 
 
         </div>

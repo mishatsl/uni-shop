@@ -55,10 +55,12 @@ namespace WebUI.Areas.Administrator.Controllers
                 Product currentProduct = productRepository.products.FirstOrDefault(p => p.ProductID == UploadProductViewModel.Product.ProductID);
                 if(currentProduct == null)
                 {
-                    currentProduct = new Product();
+                    await productRepository.SaveProduct(UploadProductViewModel.Product);
+                    currentProduct = productRepository.products.LastOrDefault();
                 }
                 List<ImagesWithResolutions> LImagesWithResolutions = currentProduct.ImagesWithResolutions.ToList();
                 int CountFiles = 0;
+                
                 for (int i = 0; i < LStates.Count(); i++)
                 {
                     switch (LStates[i])

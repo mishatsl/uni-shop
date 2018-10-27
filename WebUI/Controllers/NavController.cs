@@ -21,6 +21,7 @@ namespace WebUI.Controllers
             productRepository = repo;
         }
 
+        
         public PartialViewResult _ProductFilterArea(ProductFilterViewModel productFilterViewModel = null)
         {
             if (productFilterViewModel == null || productFilterViewModel.Categories == null || productFilterViewModel.Brands == null)

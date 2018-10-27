@@ -3,7 +3,7 @@ namespace WebUI.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialCreate : DbMigration
+    public partial class cascade_delete : DbMigration
     {
         public override void Up()
         {

@@ -140,10 +140,18 @@ $(function () {
                                         height = MAX_HEIGHT;
                                     }
                                 }
-                                canvas.width = width;
-                                canvas.height = height;
+                                //canvas.width = width;
+                                //canvas.height = height;
+                                var imgSize;
+                                if (width > height)
+                                    imgSize = width;
+                                else
+                                    imgSize = height;
+                                canvas.width = imgSize;
+                                canvas.height = imgSize;
                                 var ctx = canvas.getContext("2d");
-                                ctx.drawImage(img, 0, 0, width, height);
+                                ctx.drawImage(img, (600 - imgSize) / 2, (600 - imgSize) / 2, width, height);
+                                //ctx.drawImage(img, (600 - width) / 2, (600 - height) / 2, 0, 0, 600, 600);
                                 var dataurl = canvas.toDataURL();
                                 var photoIndex = $this.parents('li').attr('data-slot');
                                 var tempFile = dataURLtoFile(dataurl, photoIndex + "_" + Date.now() + '.png');

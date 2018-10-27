@@ -7263,6 +7263,15 @@
     <Compile Include="Infrastructure\Abstract\IAuthProvider.cs" />
     <Compile Include="Infrastructure\Concrete\FormsAuthProvider.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Migrations\201810231249392_cascade_delete.cs" />
+    <Compile Include="Migrations\201810231249392_cascade_delete.Designer.cs">
+      <DependentUpon>201810231249392_cascade_delete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810251020122_cascade.cs" />
+    <Compile Include="Migrations\201810251020122_cascade.Designer.cs">
+      <DependentUpon>201810251020122_cascade.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AppDbInitializer.cs" />
     <Compile Include="Models\CheckoutViewModel.cs" />
@@ -7372,6 +7381,14 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201810231249392_cascade_delete.resx">
+      <DependentUpon>201810231249392_cascade_delete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810251020122_cascade.resx">
+      <DependentUpon>201810251020122_cascade.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

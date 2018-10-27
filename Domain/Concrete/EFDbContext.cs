@@ -11,6 +11,9 @@ namespace Domain.Concrete
 {
     public class EFDbContext : DbContext
     {
+        public EFDbContext(): base("name=EFDbContext")
+        { }
+
        // public DbSet<Book> Books { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Image> Images { set; get; }
@@ -24,7 +27,8 @@ namespace Domain.Concrete
             modelBuilder.Entity<ImagesWithResolutions>().
                 HasMany(i=>i.Images).
                 WithOptional().
-                HasForeignKey(i=>i.ImagesWithResolutionsId);
+                HasForeignKey(i=>i.ImagesWithResolutionsId).
+                WillCascadeOnDelete(true);
 
             //modelBuilder.Entity<Image>().
             //    HasKey(i => new { i.ImageID, i.ImagesWithResolutionsId }).
@@ -34,7 +38,8 @@ namespace Domain.Concrete
             modelBuilder.Entity<Product>().
                 HasMany(p => p.ImagesWithResolutions).
                 WithOptional().
-                HasForeignKey(i => i.productId);
+                HasForeignKey(i => i.productId).
+                WillCascadeOnDelete(true);
 
             //modelBuilder.Entity<ImagesWithResolutions>().
             //    HasKey(i => new { i.ImagesWithResolutionsID, i.productId }).
