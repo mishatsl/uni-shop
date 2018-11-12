@@ -22,8 +22,9 @@ namespace WebUI.Controllers
         }
 
         
-        public PartialViewResult _ProductFilterArea(ProductFilterViewModel productFilterViewModel = null)
+        public PartialViewResult _ProductFilterArea(ProductFilterViewModel productFilterViewModel = null, string param = null)
         {
+            ViewBag.param = param;
             if (productFilterViewModel == null || productFilterViewModel.Categories == null || productFilterViewModel.Brands == null)
             {
                 productFilterViewModel = new ProductFilterViewModel();
@@ -38,7 +39,7 @@ namespace WebUI.Controllers
                         new FilterOfBrand
                         {
                             Brand = LBrands[i],
-                            CountOfProducts = productRepository.products.Select(p => p.Brand).Count(),
+                            CountOfProducts = productRepository.products.Where(p => p.Brand == LBrands[i]).Count(),
                             IsChecked = false
                         }
                         );
@@ -49,7 +50,7 @@ namespace WebUI.Controllers
                         new FilterOfCategory
                         {
                             Category = LCategories[i],
-                            CountOfProducts = productRepository.products.Select(p => p.Сategory).Count(),
+                            CountOfProducts = productRepository.products.Where(p => p.Сategory == LCategories[i]).Count(),
                             IsChecked = false
                         }
                         );
@@ -120,7 +121,7 @@ namespace WebUI.Controllers
             //    return PartialView("FlexMenu", genres);
             //}
 
-            public PartialViewResult BreadCrumb(string Category = null)
+            public PartialViewResult _BreadCrumb(string Category = null)
             {
                 ViewBag.SelectedCategory = Category;
                 IEnumerable<string> RouteCategory = Request.QueryString.AllKeys;

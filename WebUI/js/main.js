@@ -186,7 +186,9 @@
 		});
 	}
 
-
+    function linkPressed() {
+        $(this).siblings('a').click();
+    }
 
 
 })(jQuery);

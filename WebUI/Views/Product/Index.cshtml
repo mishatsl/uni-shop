@@ -1,16 +1,31 @@
-﻿@model IEnumerable<Domain.Entites.Product>
+﻿@*@model IEnumerable<Domain.Entites.Product>*@
+@*<!-- SECTION -->
+    @Html.Partial("~/Views/Product/Sections/_Collections.cshtml")
+    <!-- /SECTION -->
+    <!-- SECTION -->
+
+    @Html.Partial("~/Views/Product/Sections/_NewProduct.cshtml")
+    <!-- /SECTION -->
+    <!-- HOT DEAL SECTION -->
+    @Html.Partial("~/Views/Product/Sections/_HotDeal.cshtml")
+    <!-- /HOT DEAL SECTION -->
+    <!-- SECTION -->
+    @Html.Partial("~/Views/Product/Sections/_TopSelling.cshtml")
+
+    <!-- /SECTION -->*@
+
 <!-- SECTION -->
-@Html.Partial("~/Views/Product/Sections/_Collections.cshtml", Model)
+@Html.Action("Collections")
 <!-- /SECTION -->
 <!-- SECTION -->
 
-@Html.Partial("~/Views/Product/Sections/_NewProduct.cshtml")
+@Html.Action("NewProduct")
 <!-- /SECTION -->
 <!-- HOT DEAL SECTION -->
 @Html.Partial("~/Views/Product/Sections/_HotDeal.cshtml")
 <!-- /HOT DEAL SECTION -->
 <!-- SECTION -->
-@Html.Partial("~/Views/Product/Sections/_TopSelling.cshtml")
+@Html.Action("TopSelling")
 
 <!-- /SECTION -->
 <!-- SECTION -->

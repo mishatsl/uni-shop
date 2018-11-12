@@ -6455,6 +6455,7 @@
     <Content Include="css\slick-theme.css" />
     <Content Include="css\slick.css" />
     <Content Include="css\style.css" />
+    <Content Include="css\style_paste_ver_2.css" />
     <Content Include="dist\css\AdminLTE.css" />
     <Content Include="dist\css\AdminLTE.min.css" />
     <Content Include="dist\css\alt\AdminLTE-bootstrap-social.css" />

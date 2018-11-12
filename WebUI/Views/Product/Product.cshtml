@@ -13,9 +13,30 @@
             <div class="row">
                 <div class="col-md-12">
                     <ul class="breadcrumb-tree">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">All Categories</a></li>
-                        <li><a href="#">@Model.Сategory</a></li>
+                        <li>
+                            @Html.RouteLink("Home", new
+                                       {
+                                           Controller = "Product",
+                                           Action = "Index"
+                                       })
+                        </li>
+                        <li>
+                            @Html.RouteLink("All Categories", new
+                               {
+                                   Controller = "Product",
+                                   Action = "Store",
+                                   page = 1
+                               })
+                        </li>
+                        <li>
+                            @Html.RouteLink(Model.Сategory, new
+                                   {
+                                       Controller = "Product",
+                                       Action = "Store",
+                                       param = Model.Сategory,
+                                       page = 1
+                                   })
+                        </li>
                         <li class="active">@Model.Name</li>
                     </ul>
                 </div>
@@ -83,8 +104,7 @@
                             <span class="product-available">In Stock</span>
                         }
                     </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-
+                    <p>@Model.Description</p>
                     <div class="product-options">
                         <label>
                             Size
@@ -95,7 +115,7 @@
                         <label>
                             Color
                             <select class="input-select">
-                                <option value="0">Red</option>
+                                <option value="0">@Model.Color</option>
                             </select>
                         </label>
                     </div>

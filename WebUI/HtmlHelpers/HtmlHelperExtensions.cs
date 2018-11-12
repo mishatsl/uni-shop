@@ -40,7 +40,7 @@ namespace WebUI.HtmlHelpers
 
             var ul = new TagBuilder("ul");
 
-            ul.AddCssClass("pagination");
+            ul.AddCssClass("store-pagination");
 
             ul.InnerHtml += AddLink(1, action, currentPageIndex == 1, "disabled", "<<", "First Page");
 

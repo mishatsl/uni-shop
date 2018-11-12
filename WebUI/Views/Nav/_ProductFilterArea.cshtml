@@ -1,80 +1,146 @@
 ﻿@model WebUI.Models.ProductFilterViewModel
 @using (Html.BeginForm("Store", "Product"))
 {
-<div id="aside" class="col-md-3">
-    <!-- aside Widget -->
-    <div class="aside">
-        <h3 class="aside-title">Categories</h3>
-        <div class="checkbox-filter">
-            @for (int i = 0; i < Model.Categories.Count(); i++)
-            {
+    <div id="aside" class="col-md-3">
+        <!-- aside Widget -->
+        <div class="aside">
+            <h3 class="aside-title">Categories</h3>
+            <div class="checkbox-filter">
+                @for (int i = 0; i < Model.Categories.Count(); i++)
+                {
                 <div class="input-checkbox">
                     @Html.CheckBoxFor(model => Model.Categories[i].IsChecked, new
                {
                    id = "category-" + Model.Categories[i].Category,
-                   onchange = "this.form.submit();"
+                   onchange = $"document.getElementById('id-{Model.Categories.ElementAt(i).Category}').click();"
                })
                     <input type="checkbox" id="category-@i">
                     <label for="category-@Model.Categories[i].Category">
-                        <span></span>
-                         @Html.HiddenFor(m => m.Categories[i].Category)
-                         @Model.Categories[i].Category
+                        <span @if(Request.Url.AbsolutePath.Contains(Model.Categories.ElementAt(i).Category)) { @: class="checked"
+                              }></span>
+                        @Html.HiddenFor(m => m.Categories[i].Category)
+                        @Model.Categories[i].Category
                         <small>(@Model.Categories[i].CountOfProducts)</small>
                     </label>
+                    @if (Request.Url.AbsolutePath.Contains(Model.Categories.ElementAt(i).Category))
+                    {
+                        @Html.RouteLink(
+                       Model.Brands.ElementAt(i).Brand, new
+                        {
+                           Controller = "Product",
+                           Action = "Store",
+                           param = Request.Url.AbsolutePath.Contains(Model.Categories.ElementAt(i).Category) ? ViewBag.param.Replace(Model.Categories.ElementAt(i).Category,"").Replace(Url.Action("Store","Product"),"") : ViewBag.param + "//" + Model.Categories.ElementAt(i).Category,
+                           page = 1
+                        },
+                           new
+                           {
+                               id = "id-"+ Model.Categories.ElementAt(i).Category,
+                               style = "display:none;"
+                           }
+                         )
+                    }
+                                        else
+                                        {
+                                            @Html.RouteLink(Model.Categories.ElementAt(i).Category, new
+                                            {
+                                                Controller = "Product",
+                                                Action = "Store",
+                                                param = Model.Categories.ElementAt(i).Category,
+                                                page = 1
+                                            },
+                                               new
+                                               {
+                                                   id = "id-"+ Model.Categories.ElementAt(i).Category,
+                                                   style = "display:none;"
+                                               })
+                                        }
+
                 </div>
                 }
 
 
-        </div>
-    </div>
-    
-    <!-- /aside Widget -->
-    <!-- aside Widget -->
-    <div class="aside">
-        <h3 class="aside-title">Price</h3>
-        <div class="price-filter">
-            <div id="price-slider"></div>
-            <div class="input-number price-min">
-                @Html.TextBoxFor(modelItem => modelItem.PriceMin, new { id = "price-min", type = "number" })
-                <span class="qty-up">+</span>
-                <span class="qty-down">-</span>
-            </div>
-            <span>-</span>
-            <div class="input-number price-max">
-                @Html.TextBoxFor(modelItem => modelItem.PriceMax, new { id = "price-max", type = "number" })
-                <span class="qty-up">+</span>
-                <span class="qty-down">-</span>
             </div>
         </div>
-        <input type="submit" onclick="this.form.submit()" value="OK" />
-    </div>
-    <!-- /aside Widget -->
-    <!-- aside Widget -->
-    <div class="aside">
-        <h3 class="aside-title">Brand</h3>
-        <div class="checkbox-filter">
-            @for (int i = 0; i < Model.Brands.Count(); i++)
-            {
+
+        <!-- /aside Widget -->
+        <!-- aside Widget -->
+        <div class="aside">
+            <h3 class="aside-title">Price</h3>
+            <div class="price-filter">
+                <div id="price-slider"></div>
+                <div class="input-number price-min">
+                    @Html.TextBoxFor(modelItem => modelItem.PriceMin, new { id = "price-min", type = "number" })
+                    <span class="qty-up">+</span>
+                    <span class="qty-down">-</span>
+                </div>
+                <span>-</span>
+                <div class="input-number price-max">
+                    @Html.TextBoxFor(modelItem => modelItem.PriceMax, new { id = "price-max", type = "number" })
+                    <span class="qty-up">+</span>
+                    <span class="qty-down">-</span>
+                </div>
+            </div>
+            <input type="submit" onclick="this.form.submit()" value="OK" />
+        </div>
+        <!-- /aside Widget -->
+        <!-- aside Widget -->
+        <div class="aside">
+            <h3 class="aside-title">Brand</h3>
+            <div class="checkbox-filter">
+                @for (int i = 0; i < Model.Brands.Count(); i++)
+                {
                 <div class="input-checkbox">
                     @Html.CheckBoxFor(model => Model.Brands[i].IsChecked, new
                {
                    id = "brand-" + Model.Brands.ElementAt(i).Brand,
-                   onchange = "this.form.submit();"
+                   onchange = $"document.getElementById('id-{Model.Brands.ElementAt(i).Brand}').click();"
                })
                     <input type="checkbox" id="brand-1">
-                    <label for="brand-@Model.Brands[i].Brand" >
-                        <span></span>
+                    <label for="brand-@Model.Brands[i].Brand">
+                        <span @if (Request.Url.AbsolutePath.Contains(Model.Brands.ElementAt(i).Brand)) { @: class="checked"
+                              }></span>
                         @Html.HiddenFor(m => m.Brands[i].Brand)
-                       @Model.Brands.ElementAt(i).Brand
+                        @Model.Brands.ElementAt(i).Brand
                         <small>(@Model.Brands[i].CountOfProducts)</small>
                     </label>
+                    @if (Request.Url.AbsolutePath.Contains(Model.Brands.ElementAt(i).Brand))
+                    {
+                        @Html.RouteLink(Model.Brands.ElementAt(i).Brand, new
+                   {
+                       Controller = "Product",
+                       Action = "Store",
+                       param = Request.Url.AbsolutePath.Contains(Model.Brands.ElementAt(i).Brand) ? ViewBag.param.Replace(Model.Brands.ElementAt(i).Brand,"") :  ViewBag.param + "//" + Model.Brands.ElementAt(i).Brand ,
+                               page = 1
+                           },
+                           new
+                           {
+                               id = "id-"+ Model.Brands.ElementAt(i).Brand,
+                               style = "display:none;"
+                           })
+                    }
+                        else
+                        {
+                            @Html.RouteLink(Model.Brands.ElementAt(i).Brand, new
+                            {
+                                Controller = "Product",
+                                Action = "Store",
+                                param = Model.Brands.ElementAt(i).Brand,
+                                page = 1
+                            },
+                               new
+                               {
+                                   id = "id-"+ Model.Brands.ElementAt(i).Brand,
+                                   style = "display:none;"
+                               })
+                        }
+
                 </div>
-            }
+                }
 
 
+            </div>
         </div>
+
+
     </div>
-
-
-</div>
 }

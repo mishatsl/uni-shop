@@ -2,7 +2,7 @@
 @model Domain.Entites.Product
 
 
-
+<a href="@Url.Action("Product", "Product", new { Model.ProductID })">
 <div class="product-img">
     <img src="@Url.Action("GetImage","Product", new { Model.ProductID, width = 263, height = 263})" alt="">
     <div class="product-label">
@@ -22,12 +22,13 @@
             <i class="fa fa-star"></i>
         }
     </div>
-    <div class="product-btns">
+    @*<div class="product-btns">
         <button class="add-to-wishlist" tabindex="-1"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
         <button class="add-to-compare" tabindex="-1"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
         <button class="quick-view" tabindex="-1"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-    </div>
+    </div>*@
 </div>
+</a>
 @using (Html.BeginForm("AddToCart", "Cart"))
 {
 <div class="add-to-cart">

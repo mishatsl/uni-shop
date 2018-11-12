@@ -150,7 +150,7 @@ $(function () {
                                 canvas.width = imgSize;
                                 canvas.height = imgSize;
                                 var ctx = canvas.getContext("2d");
-                                ctx.drawImage(img, (600 - imgSize) / 2, (600 - imgSize) / 2, width, height);
+                                ctx.drawImage(img, (imgSize - width) / 2, (imgSize - height) / 2, width, height);
                                 //ctx.drawImage(img, (600 - width) / 2, (600 - height) / 2, 0, 0, 600, 600);
                                 var dataurl = canvas.toDataURL();
                                 var photoIndex = $this.parents('li').attr('data-slot');
@@ -231,7 +231,7 @@ $(window).on('reload', function (e) {
     if (href.includes('product//product')) {
         var IsChangedForm = false;
         $('.form-group input, #txtUploadFile, ').each(function (input) {
-            if (input.value == input.defaultValue) {
+            if (input.value === input.defaultValue) {
                 alert("Please change field.");
                 IsChangedForm = true;
             }

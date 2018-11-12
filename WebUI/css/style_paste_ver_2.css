@@ -62,21 +62,17 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    /*color: #2B2D42;*/
-    color: #6F7290;
-    font-weight: 700;
-    margin: 0 0 10px;
+  color: #2B2D42;
+  font-weight: 700;
+  margin: 0 0 10px;
 }
 
-h2 {
-    font-size: 40px;
+a {
+  color: #2B2D42;
+  font-weight: 500;
+  -webkit-transition: 0.2s color;
+  transition: 0.2s color;
 }
-    a {
-        color: #2B2D42;
-        font-weight: 500;
-        -webkit-transition: 0.2s color;
-        transition: 0.2s color;
-    }
 
 a:hover, a:focus {
   color: #D10024;
@@ -264,26 +260,6 @@ textarea.input {
   background-color: #D10024;
   border-color: #D10024;
 }
-
-    .input-checkbox input[type="checkbox"]+label span.checked {
-        background-color: #D10024;
-        border-color: #D10024;
-    }
-
-        .input-checkbox input[type="checkbox"]+label span.checked:after {
-            content: '✔';
-            position: absolute;
-            top: -2px;
-            left: 1px;
-            font-size: 10px;
-            color: #FFF;
-            opacity: 1;
-            -webkit-transform: scale(1);
-            -ms-transform: scale(1);
-            transform: scale(1);
-            -webkit-transition: all 0.2s;
-            transition: all 0.2s;
-        }
 
 .input-radio input[type="radio"]:checked+label span:after {
   opacity: 1;
@@ -581,7 +557,6 @@ textarea.input {
 .dropdown.open>.cart-dropdown {
   opacity: 1;
   visibility: visible;
-  z-index: 10000;
 }
 
 .cart-dropdown .cart-list {
@@ -811,7 +786,7 @@ textarea.input {
 ===========================================================*/
 
 #hot-deal.section {
-  padding: 150px 0px;
+  padding: 60px 0px;
   margin: 30px 0px;
   background-color: #E4E7ED;
   background-image: url('../img/hotdeal.png');
@@ -2212,4 +2187,17 @@ textarea.input {
     float: none;
     margin-top: 10px;
   }
+}
+
+.store-pagination li a.active {
+    color: white;
+}
+
+.store-pagination li a.active:hover {
+    color: white;
+}
+
+.disabled
+{
+    display: none;
 }

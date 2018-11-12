@@ -53,7 +53,7 @@ namespace WebUI.Controllers
         //    return null;
         //}
         
-        public ViewResult Store(ProductFilterViewModel productFilterViewModel, int page = 1, int pageSize = 9)
+        public ViewResult Store(ProductFilterViewModel productFilterViewModel = null, int page = 1, int pageSize = 9)
         {
             ProductListViewModel model;
             if (productFilterViewModel == null || 
@@ -76,19 +76,36 @@ namespace WebUI.Controllers
             }
             else
             {
+                List<Product> Products_sort_category = new List<Product>();
+                //if (productFilterViewModel.Categories.Select(c => c.Category).Count() > 0)
+                //{
+                //    foreach (string category in productFilterViewModel.Categories.Select(c => c.Category))
+                //    {
+                //        Products_1.AddRange(productRepository.products.Where(p => p.Сategory == category));
+                //    }
+                //}
+                //List<Product> Products_2 = new List<Product>();
+                //if (productFilterViewModel.Brands.Select(b => b.Brand).Count() > 0)
+                //{
+                //    foreach (string brand in productFilterViewModel.Brands.Select(b => b.Brand))
+                //    {
+                //        Products_.AddRange(productRepository.products.Where(p => p.Brand == brand));
+                //    }
+                //}
+                
                 model = new ProductListViewModel
                 {
                     Products = productRepository.products.Where(p=>
                     (productFilterViewModel.Categories != null &&
-                    productFilterViewModel.Categories.Select(c=>c.Category).Contains(p.Сategory)) && 
-                    (productFilterViewModel.Brands != null && productFilterViewModel.Brands.Select(b=>b.Brand).Contains(p.Brand)) && 
-                    (p.Price>= productFilterViewModel.PriceMin && p.Price<= productFilterViewModel.PriceMax)).
-                    
+                    productFilterViewModel.Categories.Select(c => c.Category).Contains(p.Сategory)) &&
+                    (productFilterViewModel.Brands != null && productFilterViewModel.Brands.Select(b => b.Brand).Contains(p.Brand)) &&
+                    (p.Price >= productFilterViewModel.PriceMin && p.Price <= productFilterViewModel.PriceMax)).
+
                     //Where(p => p.Brand == null ||(ProductFilterViewModel.Brands.Select(b=>b.Brand).Contains(p.Brand))&&
                     //(p.Сategory == null || (productRepository.products.Select(c=>c.Сategory).Contains(p.Сategory))&&
                     //( (p.Price>=ProductFilterViewModel.PriceMax && p.Price<= ProductFilterViewModel.PriceMax)))
                     //).
-                    
+                    //productFilterViewModel.Categories.Select(viewCategory => viewCategory.Category).Where(category => category == p.Сategory)).
                     OrderBy(p => p.ProductID).Skip((page - 1) * pageSize).Take(pageSize),
                     pagingInfo = new PagingInfo
                     {
@@ -138,8 +155,8 @@ namespace WebUI.Controllers
             // ProductSlideViewModel productSlideViewModel = 
             if (TotalProductsInSlide == null)
                 TotalProductsInSlide = countOfProducts;
-            IEnumerable<Product> products = productRepository.products.Where(p => p.New == true).OrderBy(p => p.ProductID).Skip((int)(TotalProductsInSlide - 1)).Take(2);
-            return PartialView("_NewProduct", products);
+            IEnumerable<Product> products = productRepository.products.Where(p => p.New == true).OrderBy(p => p.ProductID);
+            return PartialView("~/Views/Product/Sections/_NewProduct.cshtml", products);
             //.OrderBy(book => book.BookID).Skip((page - 1) * pageSize).Take(pageSize),
         }
 
@@ -150,20 +167,22 @@ namespace WebUI.Controllers
             // ProductSlideViewModel productSlideViewModel = 
             if (TotalProductsInSlide == null)
                 TotalProductsInSlide = countOfProducts;
-            IEnumerable<Product> products = productRepository.products.Where(p => p.New == true).OrderBy(p => p.ProductID).Skip((int)(TotalProductsInSlide - 1)).Take(2);
-            return PartialView("_TopSelling", products);
+            IEnumerable<Product> products = productRepository.products.Where(p => p.TopSelling == true).OrderBy(p => p.ProductID);
+            return PartialView("~/Views/Product/Sections/_TopSelling.cshtml", products);
             //.OrderBy(book => book.BookID).Skip((page - 1) * pageSize).Take(pageSize),
         }
 
         public ActionResult Collections()
         {
-            IEnumerable<string> categories = productRepository.products.Select(p => p.Сategory).Distinct().Take(3);
-            List<Product> products  = new List<Product>();
-            foreach(var category in categories)
-            {
-                products.Add(productRepository.products.Where(p => p.Сategory == category).FirstOrDefault());
-            }
-            return PartialView("_Collections", products);
+            //IEnumerable<string> categories = productRepository.products.Select(p => p.Сategory).Distinct().Take(3);
+            //List<Product> products  = new List<Product>();
+            //foreach(var category in categories)
+            //{
+            //    products.Add(productRepository.products.Where(p => p.Сategory == category).FirstOrDefault());
+            //}
+
+            IEnumerable<Product> products = productRepository.products.GroupBy(p => p.Сategory).Select(p => p.FirstOrDefault());
+            return PartialView("~/Views/Product/Sections/_Collections.cshtml", products);
             //.OrderBy(book => book.BookID).Skip((page - 1) * pageSize).Take(pageSize),
         }
 
