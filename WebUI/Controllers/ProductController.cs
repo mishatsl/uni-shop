@@ -55,7 +55,7 @@ namespace WebUI.Controllers
         
         public ViewResult Store(ProductFilterViewModel productFilterViewModel = null, int page = 1, int pageSize = 9)
         {
-            ProductListViewModel model;
+            ProductListViewModel model; ;
             if (productFilterViewModel == null || 
                 (productFilterViewModel.Categories == null &&
                 productFilterViewModel.Brands == null &&
