@@ -53,14 +53,16 @@ namespace WebUI.Controllers
         //    return null;
         //}
         
-        public ViewResult Store(ProductFilterViewModel productFilterViewModel = null, int page = 1, int pageSize = 9)
+        public ViewResult Store(ProductFilterViewModel productFilterViewModel = null, string param = null, int page = 1, int pageSize = 9)
         {
-            ProductListViewModel model;
-            if (productFilterViewModel == null || 
-                (productFilterViewModel.Categories == null &&
-                productFilterViewModel.Brands == null &&
-                productFilterViewModel.PriceMin == 0 &&
-                productFilterViewModel.PriceMax == 0))
+            ProductListViewModel model; 
+
+            //if (productFilterViewModel == null || 
+            //    (productFilterViewModel.Categories == null &&
+            //    productFilterViewModel.Brands == null &&
+            //    productFilterViewModel.PriceMin == 0 &&
+            //    productFilterViewModel.PriceMax == 0))
+            if(param == null)
             {
                 model = new ProductListViewModel
                 {
@@ -76,30 +78,75 @@ namespace WebUI.Controllers
             }
             else
             {
+                int PriceMin, PriceMax;
+                string[] arr_param = param.Split('/');
+                IEnumerable<Product> Products = new List<Product>();
                 List<Product> Products_sort_category = new List<Product>();
-                //if (productFilterViewModel.Categories.Select(c => c.Category).Count() > 0)
-                //{
-                //    foreach (string category in productFilterViewModel.Categories.Select(c => c.Category))
-                //    {
-                //        Products_1.AddRange(productRepository.products.Where(p => p.Сategory == category));
-                //    }
-                //}
-                //List<Product> Products_2 = new List<Product>();
-                //if (productFilterViewModel.Brands.Select(b => b.Brand).Count() > 0)
-                //{
-                //    foreach (string brand in productFilterViewModel.Brands.Select(b => b.Brand))
-                //    {
-                //        Products_.AddRange(productRepository.products.Where(p => p.Brand == brand));
-                //    }
-                //}
+                List<Product> Products_sort_brand = new List<Product>();
+
+                IEnumerable<string> filter_categories = productRepository.products.Select(p => p.Сategory).Distinct().ToList().Intersect(arr_param);
+
+                //filter_categories = productRepository.products.Select(p => p.Сategory).Distinct().ToList();
+
+                //filter_categories = filter_categories.Intersect(param);
+
+                if (filter_categories.Count() > 0)
+                {
+                    
+                    foreach (string category in  filter_categories)
+                    {
+                        Products_sort_category.AddRange(productRepository.products.Where(p => p.Сategory == category));
+                    }
+                }
+
+                Products = Products_sort_category;
+
+                IEnumerable<string> filter_brands = productRepository.products.Select(p => p.Brand).Distinct().ToList().Intersect(arr_param);
+
+                if (filter_brands.Count() > 0)
+                {
+                    
+                    foreach (string brand in filter_brands)
+                    {
+                        Products_sort_brand.AddRange(productRepository.products.Where(p => p.Brand == brand));
+                    }
+                    if(Products_sort_category.Count() > 0)
+                    {
+                        Products = Products_sort_brand.Intersect(Products_sort_category);
+                    }
+                    else
+                    {
+                        Products = Products_sort_brand;
+                    }
+                }
                 
+                if(param.Contains("PriceMin") && param.Contains("PriceMax"))
+                {
+                    string Str_PriceMin = arr_param.FirstOrDefault(a => a.Contains("PriceMin")).Replace("PriceMin","");
+                    PriceMin = Convert.ToInt32(Str_PriceMin);
+
+                    string Str_PriceMax = arr_param.FirstOrDefault(a => a.Contains("PriceMax")).Replace("PriceMax", "");
+                    PriceMax = Convert.ToInt32(Str_PriceMax);
+                    if(Products.Count() > 0)
+                    {
+                        Products = Products.Where(p => p.Price >= PriceMin && p.Price <= PriceMax);
+                    }
+                    else
+                    {
+                        Products = productRepository.products.Where(p => p.Price >= PriceMin && p.Price <= PriceMax);
+                    }
+                    
+                }
+
+
                 model = new ProductListViewModel
                 {
-                    Products = productRepository.products.Where(p=>
-                    (productFilterViewModel.Categories != null &&
-                    productFilterViewModel.Categories.Select(c => c.Category).Contains(p.Сategory)) &&
-                    (productFilterViewModel.Brands != null && productFilterViewModel.Brands.Select(b => b.Brand).Contains(p.Brand)) &&
-                    (p.Price >= productFilterViewModel.PriceMin && p.Price <= productFilterViewModel.PriceMax)).
+                    Products = Products.
+                    //productRepository.products.Where(p=>
+                    //(productFilterViewModel.Categories != null &&
+                    //productFilterViewModel.Categories.Select(c => c.Category).Contains(p.Сategory)) &&
+                    //(productFilterViewModel.Brands != null && productFilterViewModel.Brands.Select(b => b.Brand).Contains(p.Brand)) &&
+                    //(p.Price >= productFilterViewModel.PriceMin && p.Price <= productFilterViewModel.PriceMax)).
 
                     //Where(p => p.Brand == null ||(ProductFilterViewModel.Brands.Select(b=>b.Brand).Contains(p.Brand))&&
                     //(p.Сategory == null || (productRepository.products.Select(c=>c.Сategory).Contains(p.Сategory))&&

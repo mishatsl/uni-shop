@@ -16,20 +16,37 @@
                })
                     <input type="checkbox" id="category-@i">
                     <label for="category-@Model.Categories[i].Category">
-                        <span @if(Request.Url.AbsolutePath.Contains(Model.Categories.ElementAt(i).Category)) { @: class="checked"
+                        <span @if (Request.Url.AbsolutePath.Contains(Model.Categories.ElementAt(i).Category))
+                        { @: class="checked"
                               }></span>
                         @Html.HiddenFor(m => m.Categories[i].Category)
                         @Model.Categories[i].Category
                         <small>(@Model.Categories[i].CountOfProducts)</small>
                     </label>
-                    @if (Request.Url.AbsolutePath.Contains(Model.Categories.ElementAt(i).Category))
-                    {
+                    
+                    @{
+                        string param = "";
+                        if (ViewBag.param != null)
+                        {
+                            param = ViewBag.param as string;
+                        }
+
+                        if(param.Contains(Model.Categories.ElementAt(i).Category))
+                        {
+                           param = param.Replace(Model.Categories.ElementAt(i).Category, "");
+                        }
+                        else
+                        {
+                            param += "/" + Model.Categories.ElementAt(i).Category;
+                        }
+                    }
                         @Html.RouteLink(
                        Model.Brands.ElementAt(i).Brand, new
                         {
                            Controller = "Product",
                            Action = "Store",
-                           param = Request.Url.AbsolutePath.Contains(Model.Categories.ElementAt(i).Category) ? ViewBag.param.Replace(Model.Categories.ElementAt(i).Category,"").Replace(Url.Action("Store","Product"),"") : ViewBag.param + "//" + Model.Categories.ElementAt(i).Category,
+                           //param = Request.Url.AbsolutePath.Contains(Model.Categories.ElementAt(i).Category) ? ViewBag.param.Replace(Model.Categories.ElementAt(i).Category,"").Replace(Url.Action("Store","Product"),"") : ViewBag.param + "//" + Model.Categories.ElementAt(i).Category,
+                           param = param,
                            page = 1
                         },
                            new
@@ -38,8 +55,9 @@
                                style = "display:none;"
                            }
                          )
-                    }
-                                        else
+                    
+
+                                        @*else
                                         {
                                             @Html.RouteLink(Model.Categories.ElementAt(i).Category, new
                                             {
@@ -53,7 +71,7 @@
                                                    id = "id-"+ Model.Categories.ElementAt(i).Category,
                                                    style = "display:none;"
                                                })
-                                        }
+                                        }*@
 
                 </div>
                 }
@@ -80,7 +98,7 @@
                     <span class="qty-down">-</span>
                 </div>
             </div>
-            <input type="submit" onclick="this.form.submit()" value="OK" />
+            <button id="price-button">OK</button>
         </div>
         <!-- /aside Widget -->
         <!-- aside Widget -->
@@ -103,36 +121,36 @@
                         @Model.Brands.ElementAt(i).Brand
                         <small>(@Model.Brands[i].CountOfProducts)</small>
                     </label>
-                    @if (Request.Url.AbsolutePath.Contains(Model.Brands.ElementAt(i).Brand))
-                    {
-                        @Html.RouteLink(Model.Brands.ElementAt(i).Brand, new
-                   {
-                       Controller = "Product",
-                       Action = "Store",
-                       param = Request.Url.AbsolutePath.Contains(Model.Brands.ElementAt(i).Brand) ? ViewBag.param.Replace(Model.Brands.ElementAt(i).Brand,"") :  ViewBag.param + "//" + Model.Brands.ElementAt(i).Brand ,
-                               page = 1
-                           },
-                           new
-                           {
-                               id = "id-"+ Model.Brands.ElementAt(i).Brand,
-                               style = "display:none;"
-                           })
-                    }
+                    @{
+                        string param = "";
+                        if (ViewBag.param != null)
+                        {
+                            param = ViewBag.param as string;
+                        }
+
+                        if (param.Contains(Model.Brands.ElementAt(i).Brand))
+                        {
+                            param = param.Replace(Model.Brands.ElementAt(i).Brand, "");
+                        }
                         else
                         {
-                            @Html.RouteLink(Model.Brands.ElementAt(i).Brand, new
-                            {
-                                Controller = "Product",
-                                Action = "Store",
-                                param = Model.Brands.ElementAt(i).Brand,
-                                page = 1
-                            },
-                               new
-                               {
-                                   id = "id-"+ Model.Brands.ElementAt(i).Brand,
-                                   style = "display:none;"
-                               })
+                            param += "/" + Model.Brands.ElementAt(i).Brand;
                         }
+                    }
+                    @Html.RouteLink(Model.Brands.ElementAt(i).Brand, new
+               {
+                   Controller = "Product",
+                   Action = "Store",
+                   param = param,
+                   page = 1
+                       },
+                       new
+                       {
+                           id = "id-"+ Model.Brands.ElementAt(i).Brand,
+                           style = "display:none;"
+                       })
+                    
+                   
 
                 </div>
                 }

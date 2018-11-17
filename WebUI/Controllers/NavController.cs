@@ -24,7 +24,10 @@ namespace WebUI.Controllers
         
         public PartialViewResult _ProductFilterArea(ProductFilterViewModel productFilterViewModel = null, string param = null)
         {
-            ViewBag.param = param;
+            if(param != null)
+            {
+                ViewBag.param = param;
+            }
             if (productFilterViewModel == null || productFilterViewModel.Categories == null || productFilterViewModel.Brands == null)
             {
                 productFilterViewModel = new ProductFilterViewModel();

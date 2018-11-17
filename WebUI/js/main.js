@@ -190,5 +190,14 @@
         $(this).siblings('a').click();
     }
 
+    $('#price-button').click(function (e) {
+        e.preventDefault();
+        var param = window.location.pathname;
+        var PriceMin = $('.noUi-base .noUi-origin:nth-child(1) .noUi-handle').attr('aria-valuetext').split('.')[0];
+        var PriceMax = $('.noUi-base .noUi-origin:nth-child(3) .noUi-handle').attr('aria-valuetext').split('.')[0];
+        var href = param + "/PriceMin" + PriceMin + "/PriceMax" + PriceMax;
+        window.location.href = href;
+    });
+
 
 })(jQuery);
