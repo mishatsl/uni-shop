@@ -165,18 +165,35 @@
 			console.log('max')
 			priceSlider.noUiSlider.set([null, value]);
 		}
-	}
+    }
+
+    var param = window.location.pathname;
+    var PMin = 1;
+    var PMax = 5000;
+    var arr_param = param.split('/');
+    var href;
+    for (var i = 0; i < arr_param.length; i++) {
+        if (arr_param[i].indexOf('PriceMin') !== -1) {
+            PMin = arr_param[i].replace('PriceMin', '');
+        }
+    }
+
+    for (var i = 0; i < arr_param.length; i++) {
+        if (arr_param[i].indexOf('PriceMax') !== -1) {
+            PMax = arr_param[i].replace('PriceMax','');
+        }
+    }
 
 	// Price Slider
 	var priceSlider = document.getElementById('price-slider');
 	if (priceSlider) {
 		noUiSlider.create(priceSlider, {
-			start: [1, 999],
+            start: [PMin, PMax],
 			connect: true,
 			step: 1,
 			range: {
 				'min': 1,
-				'max': 999
+				'max': 5000
 			}
 		});
 
@@ -193,9 +210,34 @@
     $('#price-button').click(function (e) {
         e.preventDefault();
         var param = window.location.pathname;
-        var PriceMin = $('.noUi-base .noUi-origin:nth-child(1) .noUi-handle').attr('aria-valuetext').split('.')[0];
-        var PriceMax = $('.noUi-base .noUi-origin:nth-child(3) .noUi-handle').attr('aria-valuetext').split('.')[0];
-        var href = param + "/PriceMin" + PriceMin + "/PriceMax" + PriceMax;
+        var PriceMin = $('#price-min').val().split('.')[0];
+        var PriceMax = $('#price-max').val().split('.')[0];
+        var arr_param = param.split('/');
+        var IsChanged = false;
+        var href;
+        for (var i = 0; i < arr_param.length; i++)
+        {
+            if (arr_param[i].indexOf('PriceMin') !== -1) {
+                arr_param[i] = "PriceMin" + PriceMin;
+                IsChanged = true;
+            }
+        }
+
+        for (var i = 0; i < arr_param.length; i++) {
+            if (arr_param[i].indexOf('PriceMax') !== -1) {
+                arr_param[i] = "PriceMax" + PriceMax;
+                IsChanged = true;
+            }
+        }
+        //var PriceMin = $('.noUi-base .noUi-origin:nth-child(1) .noUi-handle').attr('aria-valuetext').split('.')[0];
+        //var PriceMax = $('.noUi-base .noUi-origin:nth-child(3) .noUi-handle').attr('aria-valuetext').split('.')[0];
+        if (IsChanged) {
+            href = arr_param.join('/');
+        }
+        else {
+
+            href = param + "/PriceMin" + PriceMin + "/PriceMax" + PriceMax;
+        }
         window.location.href = href;
     });
 

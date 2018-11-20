@@ -100,7 +100,18 @@ namespace WebUI.Controllers
                 }
                 int pMax = productFilterViewModel.PriceMax;
                 int pMin = productFilterViewModel.PriceMin;
-                productFilterViewModel_2 = new ProductFilterViewModel
+                string[] arr_param = param.Split('/');
+
+                if (param.Contains("PriceMin") && param.Contains("PriceMax"))
+                {
+                    string Str_PriceMin = arr_param.FirstOrDefault(a => a.Contains("PriceMin")).Replace("PriceMin", "");
+                    pMin = Convert.ToInt32(Str_PriceMin);
+
+                    string Str_PriceMax = arr_param.FirstOrDefault(a => a.Contains("PriceMax")).Replace("PriceMax", "");
+                    pMax = Convert.ToInt32(Str_PriceMax);
+                }
+
+                    productFilterViewModel_2 = new ProductFilterViewModel
                 {
                     Brands = filterOfBrands,
                     Categories = filterOfCategory,

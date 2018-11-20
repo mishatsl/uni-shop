@@ -741,6 +741,7 @@ textarea.input {
   position: relative;
   overflow: hidden;
   margin: 15px 0px;
+  height: 240px;
 }
 
 .shop:before {
@@ -2212,4 +2213,13 @@ textarea.input {
     float: none;
     margin-top: 10px;
   }
+}
+
+
+#price-button {
+    background: #D10024;
+    color: white;
+    font-weight: bolder;
+    border: none;
+    margin-top: 10px;
 }
