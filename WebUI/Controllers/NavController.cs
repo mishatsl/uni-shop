@@ -143,9 +143,20 @@ namespace WebUI.Controllers
                 return PartialView("_BreadCrumb", RouteCategory);
             }
 
-            public PartialViewResult Menu(string Category = null)
+            public PartialViewResult Menu(string Category = null, string param = null)
             {
-                ViewBag.SelectedCategory = Category;
+            if (param != null)
+            {
+                ViewBag.active = param;
+            }
+            else if(Request.Url.PathAndQuery.Contains("Store"))
+            {
+                ViewBag.active = "All Categories";
+            }
+            else if(Request.Url.PathAndQuery.Contains("/") || Request.Url.PathAndQuery.Contains("Product/Product"))
+            {
+                ViewBag.active = "Home";
+            }
                 IEnumerable<string> Categories = productRepository.products.Select(c => c.Сategory).Distinct().OrderBy(x => x);
 
                 return PartialView("_Menu", Categories);

@@ -9,22 +9,24 @@
             {
             for (int i = 0; i < Model.Count() && i < 3; i++)
             {<div class="col-md-4 col-xs-6">
-                    <div class="shop">
-                        @if (Model.ElementAt(i).ImagesWithResolutions.Count() != 0 &&
-                                Model.ElementAt(i).ImagesWithResolutions.FirstOrDefault().Images.Count() != 0 &&
-                                Model.ElementAt(i).ImagesWithResolutions.FirstOrDefault().Images.
-                                FirstOrDefault()
-                                .ImageData != null)
-                        {
-                        <div class="shop-img">
-                            <img src="@Url.Action("GetImage", "Product", new { Model.ElementAt(i).ProductID, width = 263, height = 263 })" alt="" />
-                        </div>
-                        }                      
-                        <div class="shop-body">
-                            <h3>@Model.ElementAt(i).Сategory<br>Collection</h3>
-                            <a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
+                 <a href="@Url.Action("Store","Product",new { param = Model.ElementAt(i).Сategory})">
+                     <div class="shop">
+                         @if (Model.ElementAt(i).ImagesWithResolutions.Count() != 0 &&
+                                 Model.ElementAt(i).ImagesWithResolutions.FirstOrDefault().Images.Count() != 0 &&
+                                 Model.ElementAt(i).ImagesWithResolutions.FirstOrDefault().Images.
+                                 FirstOrDefault()
+                                 .ImageData != null)
+                         {
+                             <div class="shop-img">
+                                 <img src="@Url.Action("GetImage", "Product", new { Model.ElementAt(i).ProductID, width = 263, height = 263 })" alt="" />
+                             </div>
+                         }
+                         <div class="shop-body">
+                             <h3>@Model.ElementAt(i).Сategory<br>Collection</h3>
+                             <span class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></span>
+                         </div>
+                     </div>
+                 </a>
                 </div>}
             }
 

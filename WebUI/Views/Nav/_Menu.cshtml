@@ -6,25 +6,21 @@
         <div id="responsive-nav">
             <!-- NAV -->
             <ul class="main-nav nav navbar-nav">
-                <li>@Html.ActionLink("Home", "Index", "Product")</li>
-                <li>
+                <li class="@( ViewBag.active != null && "Home" == ViewBag.active ? "active" : "")">@Html.ActionLink("Home", "Index", "Product")</li>
+                <li class="@( ViewBag.active != null && "All Categories" == ViewBag.active ? "active" : "")">
                     @Html.ActionLink("All Categories", "Store", "Product")
                 </li>
 
                 @foreach (var link in Model)
                 {
-                    <li>
+                    <li class="@( ViewBag.active != null && link == ViewBag.active ? "active" : "")">
                         @Html.RouteLink(link, new
                         {
                             Controller = "Product",
                             Action = "Store",
                             param = link,
                             page = 1
-                        },
-                           new
-                           {
-                               @class = (link == ViewBag.SelectedCategory ? "active" : "")
-                           })
+                        })
                     </li>
                 }
             </ul>
