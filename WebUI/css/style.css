@@ -1315,7 +1315,7 @@ textarea.input {
 
 .store-filter {
   margin-bottom: 15px;
-  margin-top: 15px;
+  margin-top: 65px;
 }
 
 /*-- Store Sort --*/
@@ -2036,6 +2036,7 @@ textarea.input {
 #footer {
   background: #15161D;
   color: #B9BABC;
+  margin-top: 40px;
 }
 
 #bottom-footer {
@@ -2228,4 +2229,16 @@ textarea.input {
     font-weight: bolder;
     border: none;
     margin-top: 10px;
+}
+
+#ui-id-1
+{
+    background-color: white;
+    width: 500px;
+    padding: 7px;
+}
+
+.ui-menu-item
+{
+    margin: 4px;
 }

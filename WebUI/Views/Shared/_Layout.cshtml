@@ -93,6 +93,7 @@
         </div>
         <!-- /top footer -->
         <!-- bottom footer -->
+        @Html.Action("Footer","Nav")
         <div id="bottom-footer" class="section">
             <div class="container">
                 <!-- row -->
@@ -127,8 +128,9 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/store_js")
     <script>
- $(function () {
-            $("[data-autocomplete-source]").each(function () {
+        $(document).ready(function()
+        {
+            $("#data-autocomplete-source").keypress(function () {
                 var target = $(this);
                 target.autocomplete({ source: target.attr("data-autocomplete-source") });
             });

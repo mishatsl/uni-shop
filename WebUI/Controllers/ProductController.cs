@@ -52,8 +52,55 @@ namespace WebUI.Controllers
         //    }
         //    return null;
         //}
-        
-        public ViewResult Store(ProductFilterViewModel productFilterViewModel = null, string param = null, int page = 1, int pageSize = 9)
+
+
+        public ViewResult Search(string searchParam = null, string category = null, int page = 1, int pageSize = 9)
+        {
+            ViewBag.active = null;
+            ProductListViewModel model;
+            IEnumerable<Product> products = new List<Product>();
+            if(searchParam != null)
+            {
+                searchParam = searchParam.ToLower();
+
+                if (category != null && category != "null")
+                {
+                    products = productRepository.products.Where(p => (p.Name.ToLower().Split(' ').FirstOrDefault(s => s.StartsWith(searchParam)) != null || (p.Name.ToLower() == searchParam )) && p.Сategory == category).OrderBy(p => p.ProductID).Skip((page - 1) * pageSize).Take(pageSize);
+                    if (products.Count() <= 0)
+                    {
+                        products = productRepository.products.Where(p => (p.Brand.ToLower().Split(' ').FirstOrDefault(s => s.StartsWith(searchParam)) != null || (p.Brand.ToLower() == searchParam )) && p.Сategory == category).OrderBy(p => p.ProductID).Skip((page - 1) * pageSize).Take(pageSize);
+                    }
+                }
+                else
+                {
+
+                    products = productRepository.products.Where(p => (p.Name.ToLower().Split(' ').FirstOrDefault(s => s.StartsWith(searchParam)) != null) || (p.Name.ToLower() == searchParam)).OrderBy(p => p.ProductID).Skip((page - 1) * pageSize).Take(pageSize);
+                    if (products.Count() <= 0)
+                    {
+                        products = productRepository.products.Where(p => (p.Brand.ToLower().Split(' ').FirstOrDefault(s => s.StartsWith(searchParam)) != null) ||( p.Brand.ToLower() == searchParam)).OrderBy(p => p.ProductID).Skip((page - 1) * pageSize).Take(pageSize);
+                    }
+                    if (products.Count() <= 0)
+                    {
+                        products = productRepository.products.Where(p => (p.Сategory.ToLower().Split(' ').FirstOrDefault(s => s.StartsWith(searchParam)) != null) || (p.Сategory.ToLower() == searchParam)).OrderBy(p => p.ProductID).Skip((page - 1) * pageSize).Take(pageSize);
+                    }
+                }
+                              
+            }
+            model = new ProductListViewModel
+            {
+                Products = products,
+                pagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = pageSize,
+                    TotalItems = products.Count()
+                },
+                productFilterViewModel = new ProductFilterViewModel()
+            };
+            return View("Store", model);
+        }
+
+            public ViewResult Store(ProductFilterViewModel productFilterViewModel = null, string param = null, int page = 1, int pageSize = 9)
         {
             ProductListViewModel model; 
 
@@ -158,7 +205,7 @@ namespace WebUI.Controllers
                     {
                         CurrentPage = page,
                         ItemsPerPage = pageSize,
-                        TotalItems = productRepository.products.Count()
+                        TotalItems = Products.Count()
                     }
                   //  productFilterViewModel = productFilterViewModel
                     

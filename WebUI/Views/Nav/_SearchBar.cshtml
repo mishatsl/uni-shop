@@ -1,0 +1,15 @@
+﻿<div class="col-md-6">
+    <div class="header-search">
+        <form action="@Url.Action("Search","Product")">
+            <select class="input-select">
+                <option value="null">All Categories</option>
+                @foreach (var Category in Model.Categories)
+                {
+                    <option value="@Category">@Category</option>
+                }
+            </select>
+            <input class="input" id="data-autocomplete-source" placeholder="Search here" name="searchParam" data-autocomplete-source='@Url.Action("AutocompleteSearch", "Nav")'>
+            <input type="submit" value="Search" class="search-btn" />
+        </form>
+    </div>
+</div>

@@ -153,7 +153,7 @@ namespace WebUI.Controllers
             {
                 ViewBag.active = "All Categories";
             }
-            else if(Request.Url.PathAndQuery.Contains("/") || Request.Url.PathAndQuery.Contains("Product/Product"))
+            else if(Request.Url.PathAndQuery == "/" || Request.Url.PathAndQuery.Contains("Product/Product"))
             {
                 ViewBag.active = "Home";
             }
@@ -173,24 +173,35 @@ namespace WebUI.Controllers
                 return PartialView("_Header", headerViewModel);
             }
 
-            public ActionResult AutocompleteSearch(string term, string Category = null)
+            public ActionResult AutocompleteSearch(string term, string category = null)
             {
 
+            //category = Request.QueryString["category"];
+            term = term.ToLower();
 
-                if (Category == null)
+                if (category == null || category == "null")
                 {
-                    var models = productRepository.products.Where(p => p.Name.Contains(term)).Select(p => new { value = p.Name }).
+                    var models = productRepository.products.Where(p => p.Name.ToLower().Split(' ').FirstOrDefault(s => s.StartsWith(term)) != null || p.Name.ToLower() == term).Select(p => new { value = p.Name }).
                     Distinct();
                     return Json(models, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    var models = productRepository.products.Where(p => p.Name.Contains(term) && p.Сategory == Category).Select(p => new { value = p.Name }).
+                    var models = productRepository.products.Where(p => (p.Name.ToLower().Split(' ').FirstOrDefault(s => s.StartsWith(term)) != null || p.Name.ToLower() == term)&& p.Сategory == category).Select(p => new { value = p.Name }).
                     Distinct();
                     return Json(models, JsonRequestBehavior.AllowGet);
                 }
 
 
             }
+
+        public ActionResult Footer()
+        {
+            FooterViewModel footerViewModel = new FooterViewModel()
+            {
+                Categoreis = productRepository.products.Select(p => p.Сategory).Distinct();
+            }
+            return PartialView("_Footer", footerViewModel);
         }
+    }
     }

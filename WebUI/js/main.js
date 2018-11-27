@@ -241,5 +241,67 @@
         window.location.href = href;
     });
 
+$('.input-select').change(function(){
+   var category = $(this).children("option:selected").val();
+    if(category !=='All Categories')
+    {
+        var data_autocomplete_source = $('#data-autocomplete-source').attr('data-autocomplete-source');
+        var arr_data_autocomplete_source = data_autocomplete_source.split('?');
+        if(arr_data_autocomplete_source.length > 1)
+        {
+            if (arr_data_autocomplete_source[arr_data_autocomplete_source.length-1].indexOf('category')!== -1)
+            {
+                arr_data_autocomplete_source[arr_data_autocomplete_source.length-1] = 'category=' +  category;
+            }
+           
+        }
+         else
+         {
+            arr_data_autocomplete_source[arr_data_autocomplete_source.length] = 'category=' +  category;
+         }
+        $('#data-autocomplete-source').attr('data-autocomplete-source',arr_data_autocomplete_source.join('?'));
+     }
+});
+
+
+    $('#data-autocomplete-source').val(getUrlParameter('searchParam'));
+    if (getUrlParameter('category') !== undefined) {
+        $('.input-select').val(getUrlParameter('category'));
+    }
+
+    setAutocompleteParam()
 
 })(jQuery);
+
+function setAutocompleteParam() {
+    var category = getUrlParameter('category');
+    if (category !== 'All Categories' && category !== undefined) {
+        var data_autocomplete_source = $('#data-autocomplete-source').attr('data-autocomplete-source');
+        var arr_data_autocomplete_source = data_autocomplete_source.split('?');
+        if (arr_data_autocomplete_source.length > 1) {
+            if (arr_data_autocomplete_source[arr_data_autocomplete_source.length - 1].indexOf('category') !== -1) {
+                arr_data_autocomplete_source[arr_data_autocomplete_source.length - 1] = 'category=' + category;
+            }
+
+        }
+        else {
+            arr_data_autocomplete_source[arr_data_autocomplete_source.length] = 'category=' + category;
+        }
+        $('#data-autocomplete-source').attr('data-autocomplete-source', arr_data_autocomplete_source.join('?'));
+    }
+}
+
+function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]).replace(/\+/g, " ");
+        }
+    }
+};

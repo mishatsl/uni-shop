@@ -7276,6 +7276,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AppDbInitializer.cs" />
     <Compile Include="Models\CheckoutViewModel.cs" />
+    <Compile Include="Models\FooterViewModel.cs" />
     <Compile Include="Models\HeaderViewModel.cs" />
     <Compile Include="Models\MiniProductWidgetViewModel.cs" />
     <Compile Include="Models\ProductFilterViewModel.cs" />
@@ -7288,6 +7289,7 @@
     <Compile Include="Models\ProductListViewModel.cs" />
     <Compile Include="Areas\Administrator\Models\UploadProductViewModel.cs" />
     <Compile Include="Models\ProductWidgetCartModel.cs" />
+    <Compile Include="Models\SearchBarViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Providers\FilterSideBarValueProvider.cs" />
@@ -7360,6 +7362,8 @@
     <Content Include="Views\Product\Sections\_NewProduct.cshtml" />
     <Content Include="Views\Shared\_ProductWidget.cshtml" />
     <Content Include="Views\Shared\_DropDown.cshtml" />
+    <Content Include="Views\Nav\_SearchBar.cshtml" />
+    <Content Include="Views\Product\Sections\_HotDeal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
