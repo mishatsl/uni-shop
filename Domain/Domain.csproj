@@ -81,6 +81,7 @@
     <Compile Include="Entites\Categories.cs" />
     <Compile Include="Entites\Image.cs" />
     <Compile Include="Entites\ImagesWithResolutions.cs" />
+    <Compile Include="Entites\Information.cs" />
     <Compile Include="Entites\Product.cs" />
     <Compile Include="Entites\Review.cs" />
     <Compile Include="Entites\ShippingDetails.cs" />

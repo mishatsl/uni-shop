@@ -8,5 +8,6 @@ namespace WebUI.Models
     public class FooterViewModel
     {
         public IEnumerable<string> Categoreis { set; get; }
+        public IEnumerable<string> Informations { set; get; }
     }
 }

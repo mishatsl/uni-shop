@@ -9,5 +9,6 @@ namespace WebUI.Areas.Administrator.Models
     {
         public IEnumerable<string> Categories { set; get; }
         public IEnumerable<string> Brands { set; get; }
+        public IEnumerable<string> Informations { set; get; }
     }
 }

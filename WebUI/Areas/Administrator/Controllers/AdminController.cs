@@ -22,15 +22,57 @@ namespace WebUI.Areas.Administrator.Controllers
     {
         IProductRepository productRepository;
         int count = 4;
-
+        int pageSize = 9;
         public AdminController(IProductRepository repository)
         {
             productRepository = repository;
         }
         // GET: Home
-        public ActionResult Index()
+        public ActionResult Index(int page = 1, string brand = null, string category = null)
         {
-            return View(productRepository.products);
+            ProductViewModel productViewModel;
+            if (brand != null)
+            {
+                productViewModel = new ProductViewModel
+                {
+                    PagingInfo = new PagingInfo
+                    {
+                        CurrentPage = page,
+                        ItemsPerPage = pageSize,
+                        TotalItems = productRepository.products.Count()
+                    },
+                    Products = productRepository.products.Where(p => p.Brand == brand).Skip((page - 1) * pageSize).Take(pageSize)
+                };
+            }
+            else if(category != null)
+            {
+                productViewModel = new ProductViewModel
+                {
+                    PagingInfo = new PagingInfo
+                    {
+                        CurrentPage = page,
+                        ItemsPerPage = pageSize,
+                        TotalItems = productRepository.products.Count()
+                    },
+                    Products = productRepository.products.Where(p => p.Сategory == category).Skip((page - 1) * pageSize).Take(pageSize)
+                };
+            }
+            else
+            {
+                productViewModel = new ProductViewModel
+                {
+                    PagingInfo = new PagingInfo
+                    {
+                        CurrentPage = page,
+                        ItemsPerPage = pageSize,
+                        TotalItems = productRepository.products.Count()
+                    },
+                    Products = productRepository.products.Skip((page - 1) * pageSize).Take(pageSize)
+                };
+            }
+            
+
+            return View(productViewModel);
         }
 
         public ViewResult Edit(int ProductID)
@@ -250,15 +292,7 @@ namespace WebUI.Areas.Administrator.Controllers
             return Json("File doesn't exist!"); ;
         }
 
-        //[HttpPost]
-        //public ActionResult Temp(HttpPostedFileBase image)
-        //{
-        //    System.Drawing.Image tempImage = byteArrayToImage(new byte[image.ContentLength]);
-
-        //    tempImage.Save(,"~/temp/temp_image.png");
-        //    return View(productRepository.products);
-        //}
-
+     
         [HttpPost]
         public async Task<ActionResult> Delete(int ProductID)
         {
@@ -271,7 +305,25 @@ namespace WebUI.Areas.Administrator.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Informations(string param = null)
+        {
+            Information information = null;
+            if (param != null)
+            {
+               information = productRepository.information.FirstOrDefault(i => i.Head == param);
+            }
+            return View(information);
+        }
 
+        [HttpPost]
+        public ActionResult Informations(Domain.Entites.Information information = null)
+        {
+            if(information != null)
+            {
+                productRepository.UpdateInformation(information);
+            }
+            return View(information);
+        }
 
         public ViewResult Create()
         {

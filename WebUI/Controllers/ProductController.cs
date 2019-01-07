@@ -54,6 +54,19 @@ namespace WebUI.Controllers
         //}
 
 
+        public ViewResult Information(string param = null)
+        {
+            if(param!=null)
+            {
+                Information information = productRepository.information.FirstOrDefault(i => i.Head == param);
+                if(information != null)
+                {
+                    return View(information);
+                }
+            }
+            return null;
+        }
+
         public ViewResult Search(string searchParam = null, string category = null, int page = 1, int pageSize = 9)
         {
             ViewBag.active = null;

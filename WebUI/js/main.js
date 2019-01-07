@@ -1,6 +1,8 @@
 (function($) {
 	"use strict"
-
+    $(window).on('load',function () {
+        $("#wait").fadeOut(500);
+    });
 	// Mobile Nav toggle
 	$('.menu-toggle > a').on('click', function (e) {
 		e.preventDefault();
@@ -270,6 +272,8 @@ $('.input-select').change(function(){
     }
 
     setAutocompleteParam()
+
+    
 
 })(jQuery);
 

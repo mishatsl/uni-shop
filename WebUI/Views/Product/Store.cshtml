@@ -69,7 +69,7 @@
                 <div class="store-filter clearfix">
                     @if (Model.pagingInfo.TotalItems > 0)
                     {
-                        <span class="store-qty">Showing @Model.pagingInfo.ItemsPerPage-@Model.pagingInfo.TotalItems products</span>
+                        <span class="store-qty">Showing @(Model.pagingInfo.TotalItems > 9 ? Model.pagingInfo.ItemsPerPage : Model.pagingInfo.TotalItems)-@Model.pagingInfo.TotalItems products</span>
                         if (Model.pagingInfo.TotalItems > 9)
                         {
                             @Html.BootstrapPager(Model.pagingInfo.CurrentPage, x => Url.Action("Store", new { page = x, }), Model.pagingInfo.TotalItems, Model.pagingInfo.ItemsPerPage)

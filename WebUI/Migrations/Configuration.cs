@@ -19,5 +19,7 @@ namespace WebUI.Migrations
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data.
         }
+
+       
     }
 }

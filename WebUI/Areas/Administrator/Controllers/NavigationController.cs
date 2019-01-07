@@ -23,8 +23,9 @@ namespace WebUI.Areas.Administrator.Controllers
 
             IEnumerable<string> Brands = repository.products.Select(x => x.Brand).Distinct().OrderBy(x => x);
             IEnumerable<string> Сategories = repository.products.Select(x => x.Сategory).Distinct().OrderBy(x=>x);
+            IEnumerable<string> Informations = repository.information.Select(i => i.Head).Distinct();
             
-            return PartialView("_Sidebar", new FilterSideBarViewModel { Brands = Brands, Categories = Сategories });
+            return PartialView("_Sidebar", new FilterSideBarViewModel { Brands = Brands, Categories = Сategories, Informations = Informations });
         }
     }
 }

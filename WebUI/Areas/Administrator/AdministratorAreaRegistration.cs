@@ -16,8 +16,8 @@ namespace WebUI.Areas.Administrator
         {
             context.MapRoute(
                 "Administrator_default",
-                "admin/{action}/{id}",
-                new {controller="Admin", action = "Index", id = UrlParameter.Optional }
+                "admin/{action}/{*param}",
+                new {controller="Admin", action = "Index" }
             );
             context.MapRoute(
                   null,

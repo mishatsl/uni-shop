@@ -1,9 +1,16 @@
-﻿
+﻿tinyMCE.init({
+    selector:"#tinyMCE"
+});
 
 
 //$(document).ready(function () {
 $(function () {
  //   "use strict"
+
+    $(window).on('load', function () {
+        $("#wait").fadeOut(300);
+    });
+
     $('.upload-main-foto, .upload-foto').click(function (e) {
         if (e.target === $('a.delete-photo-a.icon.mini.vis.remove3.abs')[0]) {
             var Id = $(this).siblings('.id').val();

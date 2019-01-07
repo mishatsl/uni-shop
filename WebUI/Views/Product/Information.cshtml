@@ -1,0 +1,21 @@
+﻿@model Domain.Entites.Information
+
+@{
+    ViewBag.Title = Model.Head;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <h1>@Model.Head</h1>
+        </div>
+        <div class="row">
+            @Html.Raw(HttpUtility.HtmlDecode(Model.HTMLContent))
+        </div>
+        </div>
+    </div>

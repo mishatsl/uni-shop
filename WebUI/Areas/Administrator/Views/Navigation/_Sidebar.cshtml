@@ -66,11 +66,32 @@
 
             @foreach (var brand in Model.Brands)
             {
-            <li>
-                <a href="@Url.Action("Index","Admin",new { brand = brand, page = 1 })">
-                <i class="fa fa-circle-o">
-                    </i> @brand</a>
-            </li>
+                <li>
+                    <a href="@Url.Action("Index","Admin",new { brand = brand, page = 1 })">
+                        @brand
+                    </a>
+                </li>
+            }
+        </ul>
+    </li>
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-dashboard"></i> <span>Informations</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+
+
+            @foreach (var information in Model.Informations)
+            {
+                <li>
+                    <a href="@Url.Action("Informations","Admin",new { param = information, page = 1 })">
+                        <i class="fa fa-circle-o">
+                        </i> @information
+                    </a>
+                </li>
             }
         </ul>
     </li>

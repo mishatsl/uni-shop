@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Domain.Entites.Product>
+﻿@model WebUI.Areas.Administrator.Models.ProductViewModel
 
 @{
     Layout = "~/Areas/Administrator/Views/Shared/_AdminLayout.cshtml";
@@ -24,9 +24,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (Model != null)
+                            @if (Model != null && Model.Products!=null)
                             {
-                                foreach (Domain.Entites.Product item in Model)
+                                foreach (Domain.Entites.Product item in Model.Products)
                                 {
                                     <tr role="row" class="odd">
                                         <td class="sorting_1">@Html.DisplayFor(modelItem => item.ProductID)</td>
@@ -68,27 +68,36 @@
 
                         </div>
                     </div><div class="row">
-                        <div class="col-sm-5">
-                            <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
-                                @Html.ActionLink("Add new product", "Create", null, new { @class = "btn btn-default" }) Showing 1 to
-                                @if (Model.Count() >= 10)
-                                {
-                                    @:10
-                                }
-                                else
-                                {
-                                    <span> @Model.Count().ToString()</span>
-                                }
-                                of @Model.Count() entries
-                            </div>
-                        </div><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers" id="example2_paginate"><ul class="pagination"><li class="paginate_button previous disabled" id="example2_previous"><a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a></li><li class="paginate_button active"><a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0">1</a></li><li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0">2</a></li><li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0">3</a></li><li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0">4</a></li><li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0">5</a></li><li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0">6</a></li><li class="paginate_button next" id="example2_next"><a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0">Next</a></li></ul></div></div>
-                    </div>
-                </div>
+    <div class="col-sm-5">
+        <div class="dataTables_info" id="example2_info" role="status" aria-live="polite" style="margin:20px 0">
+            @Html.ActionLink("Add new product", "Create", null, new { @class = "btn btn-default", style = "vertical-align:middle" })
+        </div>
+
+    </div>
+    <div class="col-sm-2">
+        <div style="margin:26px 0">
+                Showing @(Model.PagingInfo.ItemsPerPage * (Model.PagingInfo.CurrentPage - 1) + 1) to
+
+                @(Model.PagingInfo.ItemsPerPage * (Model.PagingInfo.CurrentPage - 1) + Model.Products.Count())
+
+                of @Model.PagingInfo.TotalItems entries
+        </div>
+    </div>
+            <div class="col-sm-5">
+
+        <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+            @if (Model.PagingInfo.TotalItems > 9)
+            {
+                @Html.AdminPager(Model.PagingInfo.CurrentPage, x => Url.Action("Index", new { page = x, }), Model.PagingInfo.TotalItems, Model.PagingInfo.ItemsPerPage)
+            }
+        </div>
+    </div>
+</div>
             </div>
             <!-- /.box-body -->
-            <div class="box-footer">
-                Footer
-            </div>
+    <div class="box-footer">
+       
+    </div>
             <!-- /.box-footer-->
         </div>
         <!-- /.box -->

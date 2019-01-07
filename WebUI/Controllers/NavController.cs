@@ -21,10 +21,10 @@ namespace WebUI.Controllers
             productRepository = repo;
         }
 
-        
+
         public PartialViewResult _ProductFilterArea(ProductFilterViewModel productFilterViewModel = null, string param = null)
         {
-            if(param != null)
+            if (param != null)
             {
                 ViewBag.param = param;
             }
@@ -111,7 +111,7 @@ namespace WebUI.Controllers
                     pMax = Convert.ToInt32(Str_PriceMax);
                 }
 
-                    productFilterViewModel_2 = new ProductFilterViewModel
+                productFilterViewModel_2 = new ProductFilterViewModel
                 {
                     Brands = filterOfBrands,
                     Categories = filterOfCategory,
@@ -121,87 +121,89 @@ namespace WebUI.Controllers
                 productFilterViewModel = productFilterViewModel_2;
             }
 
-                return PartialView(productFilterViewModel);
+            return PartialView(productFilterViewModel);
 
 
-            }
-            // GET: Nav
-            //public PartialViewResult Menu( string genre = null,bool horizontalNav = false)
-            //{
-            //    ViewBag.SelectedGenre = genre;
+        }
+        // GET: Nav
+        //public PartialViewResult Menu( string genre = null,bool horizontalNav = false)
+        //{
+        //    ViewBag.SelectedGenre = genre;
 
-            //    IEnumerable<string> genres = repository.Books.Select(x => x.Genre).Distinct().OrderBy(x=>x);
+        //    IEnumerable<string> genres = repository.Books.Select(x => x.Genre).Distinct().OrderBy(x=>x);
 
-            //    return PartialView("FlexMenu", genres);
-            //}
+        //    return PartialView("FlexMenu", genres);
+        //}
 
-            public PartialViewResult _BreadCrumb(string Category = null)
-            {
-                ViewBag.SelectedCategory = Category;
-                IEnumerable<string> RouteCategory = Request.QueryString.AllKeys;
+        public PartialViewResult _BreadCrumb(string Category = null)
+        {
+            ViewBag.SelectedCategory = Category;
+            IEnumerable<string> RouteCategory = Request.QueryString.AllKeys;
 
-                return PartialView("_BreadCrumb", RouteCategory);
-            }
+            return PartialView("_BreadCrumb", RouteCategory);
+        }
 
-            public PartialViewResult Menu(string Category = null, string param = null)
-            {
+        public PartialViewResult Menu(string Category = null, string param = null)
+        {
             if (param != null)
             {
                 ViewBag.active = param;
             }
-            else if(Request.Url.PathAndQuery.Contains("Store"))
+            else if (Request.Url.PathAndQuery.Contains("Store"))
             {
                 ViewBag.active = "All Categories";
             }
-            else if(Request.Url.PathAndQuery == "/" || Request.Url.PathAndQuery.Contains("Product/Product"))
+            else if (Request.Url.PathAndQuery == "/" || Request.Url.PathAndQuery.Contains("Product/Product"))
             {
                 ViewBag.active = "Home";
             }
-                IEnumerable<string> Categories = productRepository.products.Select(c => c.Сategory).Distinct().OrderBy(x => x);
+            IEnumerable<string> Categories = productRepository.products.Select(c => c.Сategory).Distinct().OrderBy(x => x);
 
-                return PartialView("_Menu", Categories);
-            }
+            return PartialView("_Menu", Categories);
+        }
 
-            public PartialViewResult Header(Cart cart, string Category = null)
+        public PartialViewResult Header(Cart cart, string Category = null)
+        {
+            //    ViewBag.SelectedCategory = Category;
+            HeaderViewModel headerViewModel = new HeaderViewModel
             {
-                //    ViewBag.SelectedCategory = Category;
-                HeaderViewModel headerViewModel = new HeaderViewModel
-                {
-                    cart = cart,
-                    Categories = productRepository.products.Select(c => c.Сategory).Distinct().OrderBy(x => x)
-                };
-                return PartialView("_Header", headerViewModel);
-            }
+                cart = cart,
+                Categories = productRepository.products.Select(c => c.Сategory).Distinct().OrderBy(x => x)
+            };
+            return PartialView("_Header", headerViewModel);
+        }
 
-            public ActionResult AutocompleteSearch(string term, string category = null)
-            {
+        public ActionResult AutocompleteSearch(string term, string category = null)
+        {
 
             //category = Request.QueryString["category"];
             term = term.ToLower();
 
-                if (category == null || category == "null")
-                {
-                    var models = productRepository.products.Where(p => p.Name.ToLower().Split(' ').FirstOrDefault(s => s.StartsWith(term)) != null || p.Name.ToLower() == term).Select(p => new { value = p.Name }).
-                    Distinct();
-                    return Json(models, JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    var models = productRepository.products.Where(p => (p.Name.ToLower().Split(' ').FirstOrDefault(s => s.StartsWith(term)) != null || p.Name.ToLower() == term)&& p.Сategory == category).Select(p => new { value = p.Name }).
-                    Distinct();
-                    return Json(models, JsonRequestBehavior.AllowGet);
-                }
-
-
+            if (category == null || category == "null")
+            {
+                var models = productRepository.products.Where(p => p.Name.ToLower().Split(' ').FirstOrDefault(s => s.StartsWith(term)) != null || p.Name.ToLower() == term).Select(p => new { value = p.Name }).
+                Distinct();
+                return Json(models, JsonRequestBehavior.AllowGet);
             }
+            else
+            {
+                var models = productRepository.products.Where(p => (p.Name.ToLower().Split(' ').FirstOrDefault(s => s.StartsWith(term)) != null || p.Name.ToLower() == term) && p.Сategory == category).Select(p => new { value = p.Name }).
+                Distinct();
+                return Json(models, JsonRequestBehavior.AllowGet);
+            }
+
+
+        }
 
         public ActionResult Footer()
         {
-            FooterViewModel footerViewModel = new FooterViewModel()
+            FooterViewModel footerViewModel = new FooterViewModel
             {
-                Categoreis = productRepository.products.Select(p => p.Сategory).Distinct();
-            }
-            return PartialView("_Footer", footerViewModel);
+                Categoreis = productRepository.products.Select(p => p.Сategory).Distinct(),
+                Informations = productRepository.information.Select(i => i.Head)
+            };
+            return PartialView("_Footer", footerViewModel);  
         }
     }
-    }
+   
+}

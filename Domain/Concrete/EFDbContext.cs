@@ -19,6 +19,7 @@ namespace Domain.Concrete
         public DbSet<Image> Images { set; get; }
         public DbSet<Review> Reviews { set; get; }
         public DbSet<ImagesWithResolutions> ImagesWithResolutions { set; get; }
+        public DbSet<Information> Informations { set; get; }
         // public DbSet<Categories> Categories { set; get; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -41,6 +42,7 @@ namespace Domain.Concrete
                 HasForeignKey(i => i.productId).
                 WillCascadeOnDelete(true);
 
+            modelBuilder.Entity<Information>().ToTable("Informations");
             //modelBuilder.Entity<ImagesWithResolutions>().
             //    HasKey(i => new { i.ImagesWithResolutionsID, i.productId }).
             //    Property(i => i.ImagesWithResolutionsID).

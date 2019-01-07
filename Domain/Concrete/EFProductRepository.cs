@@ -23,6 +23,24 @@ namespace Domain.Concrete
             }
         }
 
+        public IEnumerable<Information> information
+        {
+            get
+            {
+                return context.Informations;
+            }
+        }
+
+        public async Task UpdateInformation(Information info)
+        {
+            Information information = await context.Informations.FirstOrDefaultAsync(i => i.Id == info.Id);
+            if(information != null)
+            {
+                information.HTMLContent = info.HTMLContent;
+                await context.SaveChangesAsync();
+            }
+        }
+
         public async Task SaveImagesWithResolutions(int ProductID, ImagesWithResolutions imagesWithResolutions)
         {
             // Product product = context.Products.Include(i => i.ImagesWithResolutions).FirstOrDefault( p => p.ProductID == ProductID);
