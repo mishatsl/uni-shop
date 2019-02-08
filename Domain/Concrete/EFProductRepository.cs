@@ -27,16 +27,36 @@ namespace Domain.Concrete
         {
             get
             {
-                return context.Informations;
+                return context.Informations.Include(i => i.AdditionalInformation);
+            }
+        }
+
+        public AdditionalInformation AdditionalInformation
+        {
+            get
+            {
+                return context.AdditionalInformation.FirstOrDefault();
+            }
+        }
+
+        public HotDeal HotDeal
+        {
+            get
+            {
+                return context.HotDeal.FirstOrDefault();
             }
         }
 
         public async Task UpdateInformation(Information info)
         {
-            Information information = await context.Informations.FirstOrDefaultAsync(i => i.Id == info.Id);
+            Information information = await context.Informations.Include(i => i.AdditionalInformation).FirstOrDefaultAsync(i => i.Id == info.Id);
             if(information != null)
             {
                 information.HTMLContent = info.HTMLContent;
+                information.AdditionalInformation.Address = info.AdditionalInformation.Address;
+                information.AdditionalInformation.Email = info.AdditionalInformation.Email;
+                information.AdditionalInformation.Phone = info.AdditionalInformation.Phone;
+                information.AdditionalInformation.ShortInfo = info.AdditionalInformation.ShortInfo;
                 await context.SaveChangesAsync();
             }
         }
@@ -153,6 +173,25 @@ namespace Domain.Concrete
                 imagesWithResolutions.ElementAt(i).Images = new List<Image>(imagesWithResolutions.ElementAt(i).Images);
             }
             return imagesWithResolutions;
+        }
+
+        public async Task UpdateHotDeal(HotDeal hotDeal)
+        {
+            HotDeal hot = context.HotDeal.FirstOrDefault();
+
+            if(hot != null)
+            {
+                hot.HotDealActionStartTime = hotDeal.HotDealActionStartTime;
+                hot.HotDealActionEndTime = hotDeal.HotDealActionEndTime;
+                hot.HotDealTime = hotDeal.HotDealTime;
+                hot.HotDealToProducts = hotDeal.HotDealToProducts;
+                hot.IsHotDeal = hotDeal.IsHotDeal;
+            }
+            else
+            {
+                context.HotDeal.Add(hotDeal);
+            }
+            await context.SaveChangesAsync();
         }
     }
 }

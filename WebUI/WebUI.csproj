@@ -7351,6 +7351,8 @@
     <Content Include="Areas\Administrator\Views\Navigation\_Sidebar.cshtml" />
     <Content Include="Areas\Administrator\Views\Navigation\_navbar-custom-menu.cshtml" />
     <Content Include="Areas\Administrator\Views\Admin\Informations.cshtml" />
+    <Content Include="Areas\Administrator\Views\Admin\User.cshtml" />
+    <Content Include="Areas\Administrator\Views\Admin\HotDeal.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\jquery-3.0.0.js" />
@@ -7382,6 +7384,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Administrator\AdministratorAreaRegistration.cs" />
+    <Compile Include="Areas\Administrator\Binder\HotDealBinder.cs" />
     <Compile Include="Areas\Administrator\Controllers\AdminController.cs" />
     <Compile Include="Areas\Administrator\Controllers\NavigationController.cs" />
     <Compile Include="Areas\Administrator\HTMLHelpers\HtmlHelperExtensions.cs" />
@@ -7409,26 +7412,30 @@
     <Compile Include="Infrastructure\Abstract\IAuthProvider.cs" />
     <Compile Include="Infrastructure\Concrete\FormsAuthProvider.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
-    <Compile Include="Migrations\201810231249392_cascade_delete.cs" />
-    <Compile Include="Migrations\201810231249392_cascade_delete.Designer.cs">
-      <DependentUpon>201810231249392_cascade_delete.cs</DependentUpon>
+    <Compile Include="Migrations\201901080453490_initial.cs" />
+    <Compile Include="Migrations\201901080453490_initial.Designer.cs">
+      <DependentUpon>201901080453490_initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201810251020122_cascade.cs" />
-    <Compile Include="Migrations\201810251020122_cascade.Designer.cs">
-      <DependentUpon>201810251020122_cascade.cs</DependentUpon>
+    <Compile Include="Migrations\201901100854144_second.cs" />
+    <Compile Include="Migrations\201901100854144_second.Designer.cs">
+      <DependentUpon>201901100854144_second.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201811290918293_Informations.cs" />
-    <Compile Include="Migrations\201811290918293_Informations.Designer.cs">
-      <DependentUpon>201811290918293_Informations.cs</DependentUpon>
+    <Compile Include="Migrations\201901271055227_hotdeal.cs" />
+    <Compile Include="Migrations\201901271055227_hotdeal.Designer.cs">
+      <DependentUpon>201901271055227_hotdeal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901311823388_datetime2.cs" />
+    <Compile Include="Migrations\201901311823388_datetime2.Designer.cs">
+      <DependentUpon>201901311823388_datetime2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Migrations\Configuration2.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AppContextInitializer.cs" />
     <Compile Include="Models\AppDbInitializer.cs" />
     <Compile Include="Models\CheckoutViewModel.cs" />
     <Compile Include="Models\FooterViewModel.cs" />
     <Compile Include="Models\HeaderViewModel.cs" />
+    <Compile Include="Models\HotDealViewModel.cs" />
     <Compile Include="Models\MiniProductWidgetViewModel.cs" />
     <Compile Include="Models\ProductFilterViewModel.cs" />
     <Compile Include="Models\BookListViewModel.cs" />
@@ -7549,14 +7556,17 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201810231249392_cascade_delete.resx">
-      <DependentUpon>201810231249392_cascade_delete.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201901080453490_initial.resx">
+      <DependentUpon>201901080453490_initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201810251020122_cascade.resx">
-      <DependentUpon>201810251020122_cascade.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201901100854144_second.resx">
+      <DependentUpon>201901100854144_second.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811290918293_Informations.resx">
-      <DependentUpon>201811290918293_Informations.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201901271055227_hotdeal.resx">
+      <DependentUpon>201901271055227_hotdeal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901311823388_datetime2.resx">
+      <DependentUpon>201901311823388_datetime2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

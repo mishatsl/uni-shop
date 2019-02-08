@@ -79,6 +79,7 @@
     <Compile Include="Entites\Book.cs" />
     <Compile Include="Entites\Cart.cs" />
     <Compile Include="Entites\Categories.cs" />
+    <Compile Include="Entites\HotDeal.cs" />
     <Compile Include="Entites\Image.cs" />
     <Compile Include="Entites\ImagesWithResolutions.cs" />
     <Compile Include="Entites\Information.cs" />

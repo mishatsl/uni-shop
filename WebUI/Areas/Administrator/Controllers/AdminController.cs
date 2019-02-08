@@ -332,6 +332,24 @@ namespace WebUI.Areas.Administrator.Controllers
             return View("Edit", new UploadProductViewModel { Product = new Product()});
         }
 
+        public ViewResult HotDeal()
+        {
+            HotDeal hotDeal = productRepository.HotDeal;
+            if (hotDeal == null)
+                hotDeal = new HotDeal();
+            return View(hotDeal);
+        }
+
+        [HttpPost]
+        public ViewResult HotDeal(HotDeal hot)
+        {
+            if(hot != null)
+            {
+                productRepository.UpdateHotDeal(hot);
+            }            
+            return View(hot);
+        }
+
         public byte[] imageToByteArray(System.Drawing.Image imageIn)
         {
             byte[] arr;

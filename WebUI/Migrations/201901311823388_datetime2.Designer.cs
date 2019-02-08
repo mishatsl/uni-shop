@@ -7,13 +7,13 @@ namespace WebUI.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class cascade : IMigrationMetadata
+    public sealed partial class datetime2 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(cascade));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(datetime2));
         
         string IMigrationMetadata.Id
         {
-            get { return "201810251020122_cascade"; }
+            get { return "201901311823388_datetime2"; }
         }
         
         string IMigrationMetadata.Source

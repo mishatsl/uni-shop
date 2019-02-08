@@ -168,7 +168,8 @@ namespace WebUI.Controllers
             HeaderViewModel headerViewModel = new HeaderViewModel
             {
                 cart = cart,
-                Categories = productRepository.products.Select(c => c.Сategory).Distinct().OrderBy(x => x)
+                Categories = productRepository.products.Select(c => c.Сategory).Distinct().OrderBy(x => x),
+                AdditionalInformation = productRepository.AdditionalInformation
             };
             return PartialView("_Header", headerViewModel);
         }
@@ -200,7 +201,8 @@ namespace WebUI.Controllers
             FooterViewModel footerViewModel = new FooterViewModel
             {
                 Categoreis = productRepository.products.Select(p => p.Сategory).Distinct(),
-                Informations = productRepository.information.Select(i => i.Head)
+                Informations = productRepository.information.Select(i => i.Head),
+                AdditionalInformation = productRepository.AdditionalInformation,
             };
             return PartialView("_Footer", footerViewModel);  
         }

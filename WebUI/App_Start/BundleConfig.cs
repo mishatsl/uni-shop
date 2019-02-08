@@ -21,8 +21,9 @@ namespace WebUI.App_Start
             bundles.Add(new ScriptBundle("~/bundles/store_js").Include(
                         "~/js/slick.min.js",
                         "~/js/nouislider.min.js",
-                        "~/js/jquery.zoom.min.js",
-                        "~/js/main.js"));
+                        "~/js/jquery.zoom.min.js"
+                   //     "~/js/main.js"
+                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));

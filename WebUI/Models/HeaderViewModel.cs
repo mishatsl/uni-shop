@@ -10,6 +10,7 @@ namespace WebUI.Models
     {
         public Cart cart { get; set; }
         public IEnumerable<string> Categories { set; get; }
+        public AdditionalInformation AdditionalInformation { set; get; }
        // public IEnumerable<ProductWidgetCartModel> ProductWidgetCartModels { set; get; }
     }
 }

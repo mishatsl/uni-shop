@@ -267,8 +267,9 @@
     <!-- iCheck -->
     <script src="~/plugins/iCheck/icheck.min.js"></script>
     <script src="~/dist/js/adminlte.min.js"></script>
-    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+    @*<script src="~/Scripts/tinymce/tinymce.min.js"></script>*@
     <script src="~/dist/js/Scripts.js"></script>
+    @RenderSection("Scripts",required:false)
     <script>
         $(function () {
             $('input').iCheck({

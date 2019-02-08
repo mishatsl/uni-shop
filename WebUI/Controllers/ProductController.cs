@@ -25,8 +25,9 @@ namespace WebUI.Controllers
         // GET: Home
         public ActionResult Index()
         {
+           //ViewBag.IsHotDeal = productRepository.HotDeal.IsHotDeal;
            var p =  productRepository.products.ElementAt(0);
-            return View(productRepository.products);
+           return View(productRepository.products);
         }
 
         //public PartialViewResult ProductSlideList(string criterion,int countOfProducts)
@@ -265,6 +266,37 @@ namespace WebUI.Controllers
             IEnumerable<Product> products = productRepository.products.Where(p => p.New == true).OrderBy(p => p.ProductID);
             return PartialView("~/Views/Product/Sections/_NewProduct.cshtml", products);
             //.OrderBy(book => book.BookID).Skip((page - 1) * pageSize).Take(pageSize),
+        }
+
+        public ActionResult HotDeal()
+        {
+            
+            HotDeal hotDeal = productRepository.HotDeal;
+                if (hotDeal != null)
+                {
+                    if (hotDeal.IsHotDeal == true)
+                    {
+                        DateTime now = DateTime.Now;
+                        if (DateTime.Compare(hotDeal.HotDealActionStartTime, now) <= 0 && DateTime.Compare(hotDeal.HotDealActionEndTime, now) >= 0)
+                        {
+                              //  if (Request.Cookies["HotDealActionEndTime"] == null)
+                                {
+                               
+                            
+                                        HttpCookie cookie = new HttpCookie("HotDealActionEndTime");
+                                        cookie.Value = hotDeal.HotDealActionEndTime.ToString();
+                                        cookie.Expires = hotDeal.HotDealActionEndTime;
+                                        Response.Cookies.Add(cookie);
+                                }
+                        return PartialView("~/Views/Product/Sections/_HotDeal.cshtml", hotDeal);
+                        }
+                    }
+                    else
+                    {
+                        Response.Cookies["HotDealActionEndTime"].Value = null;
+                    }
+                }
+            return null;
         }
 
 

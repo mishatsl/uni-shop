@@ -1,0 +1,116 @@
+﻿@model Domain.Entites.HotDeal
+
+@{
+    ViewBag.Title = "Information";
+    Layout = "~/Areas/Administrator/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>HotDeal</h2>
+
+
+
+
+<div class="box">
+    <div class="box-header">
+        <h3 class="box-title">@ViewBag.Title</h3>
+    </div>
+    <div class="box-body">
+        @using (Html.BeginForm("HotDeal"))
+        {         
+                    <div class="form-group">
+                        @Html.CheckBoxFor(m => m.IsHotDeal, new { @class = "form-control" })
+                        <label>Activate Hot Deal</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Hot Deal Action start time</label>
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <label>Year:</label>
+                                @Html.TextBoxFor(m => m.HotDealActionStartTime.Year,null, new { @class = "form-control" })
+                            </div>
+                            <div class="col-sm-1">
+                                <label>Month:</label>
+                                @Html.TextBoxFor(m => m.HotDealActionStartTime.Month, null, new { @class = "form-control" })
+                            </div>
+                            <div class="col-sm-1">
+                                <label>Day:</label>
+                                @Html.TextBoxFor(m => m.HotDealActionStartTime.Day, null, new { @class = "form-control" })
+                            </div>
+                            <div class="col-sm-1">
+                                <label>Hour:</label>
+                                @Html.TextBoxFor(m => m.HotDealActionStartTime.Hour, null, new { @class = "form-control" })
+                            </div>
+                            <div class="col-sm-1">
+                                <label>Minute:</label>
+                                @Html.TextBoxFor(m => m.HotDealActionStartTime.Minute, null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Hot Deal Action End time</label>
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <label>Year:</label>
+                                @Html.TextBoxFor(m => m.HotDealActionEndTime.Year, null, new { @class = "form-control" })
+                            </div>
+                            <div class="col-sm-1">
+                                <label>Month:</label>
+                                @Html.TextBoxFor(m => m.HotDealActionEndTime.Month, null, new { @class = "form-control" })
+                            </div>
+                            <div class="col-sm-1">
+                                <label>Day:</label>
+                                @Html.TextBoxFor(m => m.HotDealActionEndTime.Day, null, new { @class = "form-control" })
+                            </div>
+                            <div class="col-sm-1">
+                                <label>Hour:</label>
+                                @Html.TextBoxFor(m => m.HotDealActionEndTime.Hour, null, new { @class = "form-control" })
+                            </div>
+                            <div class="col-sm-1">
+                                <label>Minute:</label>
+                                @Html.TextBoxFor(m => m.HotDealActionEndTime.Minute, null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="form-group">
+                        <label>Hot Deal time</label>
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <label>Year:</label>
+                                @Html.TextBoxFor(m => m.HotDealTime.Year, null, new { @class = "form-control" })
+                            </div>
+                            <div class="col-sm-1">
+                                <label>Month:</label>
+                                @Html.TextBoxFor(m => m.HotDealTime.Month, null, new { @class = "form-control" })
+                            </div>
+                            <div class="col-sm-1">
+                                <label>Day:</label>
+                                @Html.TextBoxFor(m => m.HotDealTime.Day, null, new { @class = "form-control" })
+                            </div>
+                            <div class="col-sm-1">
+                                <label>Hour:</label>
+                                @Html.TextBoxFor(m => m.HotDealTime.Hour, null, new { @class = "form-control" })
+                            </div>
+                            <div class="col-sm-1">
+                                <label>Minute:</label>
+                                @Html.TextBoxFor(m => m.HotDealTime.Minute, null, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                    </div>*@
+                    <div class="form-group">
+                        <label>Hot Deal apply to products</label>
+                        @Html.TextBoxFor(m => m.HotDealToProducts, new { @class = "form-control" })
+                    </div>
+                    <input type="submit" value="save" />
+        }
+    </div>
+</div>
+
+@section Scripts
+    {
+        <script>
+            $(document).ready(function () {
+                $("#wait").fadeOut(300);
+            })
+        </script>
+    }

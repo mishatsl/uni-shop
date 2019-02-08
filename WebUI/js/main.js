@@ -1,3 +1,4 @@
+
 (function($) {
 	"use strict"
     $(window).on('load',function () {
@@ -271,8 +272,8 @@ $('.input-select').change(function(){
         $('.input-select').val(getUrlParameter('category'));
     }
 
-    setAutocompleteParam()
-
+    setAutocompleteParam();
+    hotDealCount();
     
 
 })(jQuery);
@@ -309,3 +310,114 @@ function getUrlParameter(sParam) {
         }
     }
 };
+
+function hotDealCount() {
+    var HotDealTime = getCookie('HotDealActionEndTime');
+    var IsHotDeal;
+    var currentDate;
+    var timerDate;
+    var Days, Hours, Minutes, Seconds;
+    if (HotDealTime == undefined) {
+        IsHotDeal = false;
+        return;
+    }
+    IsHotDeal = true;
+    var datetime = new Date();
+    var HotDealTimeFirstSiteLoading = getCookie('HotDealTimeFirstSiteLoading');
+    if (HotDealTimeFirstSiteLoading == undefined) {
+        setCookie('HotDealTimeFirstSiteLoading', datetime.toString(), { expires: HotDealTime.toString() });
+        HotDealTimeFirstSiteLoading = datetime.toString();
+    }
+    //var HotDealTimeArr = HotDealTime.split('-');
+    //var HotDealTimeFirstSiteLoadingTimeArr = HotDealTimeFirstSiteLoading.toString().split(" ")[4].split(":");
+    
+    var HotDealTimeArr = new Date(HotDealTime);
+    var HotDealTimeFirstSiteLoadingTimeArr = new Date(HotDealTimeFirstSiteLoading);
+
+
+
+    setInterval(function () {
+        datetime = new Date();
+        currentDate = new Date();
+        timerDate = HotDealTimeArr.getTime() - currentDate.getTime();
+        if (timerDate >= 0) {
+           // timerDate = new Date(timerDate);
+            Days = Math.floor(timerDate / 1000 / 60 / 60 / 24);
+            Hours = Math.floor((timerDate % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            Minutes = Math.floor((timerDate % (1000 * 60 * 60)) / (1000 * 60));
+            Seconds = Math.floor((timerDate % (1000 * 60 )) / (1000));
+            $(".hot-deal-countdown li div h3").each(function (index) {
+                //switch (index)
+                //{
+                //    case 0:
+                //        $(this).text(HotDealTimeArr[index] - (HotDealTimeFirstSiteLoading.toString().split(" ")[2] - datetime.getDay()));
+                //        break;
+                //    case 1:
+                //        $(this).text(HotDealTimeArr[index] - (HotDealTimeFirstSiteLoadingTimeArr[0] - datetime.getHours()));
+                //        break;
+                //    case 2:
+                //        $(this).text(HotDealTimeArr[index] - (HotDealTimeFirstSiteLoadingTimeArr[1]  - datetime.getMinutes()));
+
+                //        break;
+                //    case 3: $(this).text(HotDealTimeArr[index] - (HotDealTimeFirstSiteLoadingTimeArr[2]  - datetime.getSeconds()));
+
+                //        break;
+                //    default: break;
+                //}
+                switch (index) {
+                    case 0:
+                        $(this).text(Days);
+                        break;
+                    case 1:
+                        $(this).text(Hours);
+                        break;
+                    case 2:
+                        $(this).text(Minutes);
+                        break;
+                    case 3: $(this).text(Seconds);
+                        break;
+                    default: break;
+                }
+
+
+            });
+        }
+    }, 1000);
+};
+
+
+function setCookie(name, value, options) {
+    options = options || {};
+
+    var expires = options.expires;
+
+    if (typeof expires == "number" && expires) {
+        var d = new Date();
+        d.setTime(d.getTime() + expires * 1000);
+        expires = options.expires = d;
+    }
+    if (expires && expires.toUTCString) {
+        options.expires = expires.toUTCString();
+    }
+
+    value = encodeURIComponent(value);
+
+    var updatedCookie = name + "=" + value;
+
+    for (var propName in options) {
+        updatedCookie += "; " + propName;
+        var propValue = options[propName];
+        if (propValue !== true) {
+            updatedCookie += "=" + propValue;
+        }
+    }
+
+    document.cookie = updatedCookie;
+}
+
+function getCookie(name) {
+    var matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+}

@@ -1,39 +1,44 @@
-﻿<div id="hot-deal" class="section">
+﻿@model Domain.Entites.HotDeal
+
+
+@if(Model != null && Model.IsHotDeal)
+{
+<div id="hot-deal" class="section">
     <!-- container -->
     <div class="container">
         <!-- row -->
         <div class="row">
             <div class="col-md-12">
                 <div class="hot-deal">
-                    @*<ul class="hot-deal-countdown">
-                        <li>
-                            <div>
-                                <h3>02</h3>
-                                <span>Days</span>
-                            </div>
-                        </li>
-                        <li>
-                            <div>
-                                <h3>10</h3>
-                                <span>Hours</span>
-                            </div>
-                        </li>
-                        <li>
-                            <div>
-                                <h3>34</h3>
-                                <span>Mins</span>
-                            </div>
-                        </li>
-                        <li>
-                            <div>
-                                <h3>60</h3>
-                                <span>Secs</span>
-                            </div>
-                        </li>
-                    </ul>*@
+                    <ul class="hot-deal-countdown">
+                            <li>
+                                <div>
+                                    <h3>02</h3>
+                                    <span>Days</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <h3>10</h3>
+                                    <span>Hours</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <h3>34</h3>
+                                    <span>Mins</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <h3>60</h3>
+                                    <span>Secs</span>
+                                </div>
+                            </li>
+                        </ul>
                     <h2 class="text-uppercase">Ineternet market</h2>
-                    @*<p>New Collection Up to 50% OFF</p>*@
-                    <a class="primary-btn cta-btn" href='@Url.Action("Store","Product")'>Shop now</a>
+                    <p>@Model.HotDealToProducts Collection Up to 50% OFF</p>
+                    <a class="primary-btn cta-btn" href='@Url.Action("Store","Product",new { param = Model.HotDealToProducts})'>Shop now</a>
                 </div>
             </div>
         </div>
@@ -41,3 +46,5 @@
     </div>
     <!-- /container -->
 </div>
+}
+

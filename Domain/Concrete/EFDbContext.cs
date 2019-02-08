@@ -20,6 +20,8 @@ namespace Domain.Concrete
         public DbSet<Review> Reviews { set; get; }
         public DbSet<ImagesWithResolutions> ImagesWithResolutions { set; get; }
         public DbSet<Information> Informations { set; get; }
+        public DbSet<AdditionalInformation> AdditionalInformation { set; get; }
+        public DbSet<HotDeal> HotDeal { set; get; }
         // public DbSet<Categories> Categories { set; get; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -47,6 +49,8 @@ namespace Domain.Concrete
             //    HasKey(i => new { i.ImagesWithResolutionsID, i.productId }).
             //    Property(i => i.ImagesWithResolutionsID).
             //    HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            modelBuilder.Properties<DateTime>().Configure(c => c.HasColumnType("datetime2"));
         }
     }
 }
