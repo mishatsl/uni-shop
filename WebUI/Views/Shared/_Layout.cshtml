@@ -12,6 +12,7 @@
     @*@Scripts.Render("~/bundles/head_js")*@
 </head>
 <body>
+    <p id="demonstration" style="right: 0px;color: red;font-family: fantasy;position: fixed;opacity: 0.185;display: inline-block;font-style: italic;font-size: 30px; right: 10px;z-index:100;">Демонстрация</p>
     <div id="wait">
         @*<div id="circular3dG">
                <div id="circular3d_1G" class="circular3dG"></div>
@@ -45,18 +46,17 @@
     @Scripts.Render("~/bundles/store_js")
     <script src="~/js/main.js"></script>
     <script>
-        $(document).ready(function()
-        {
+        $(document).ready(function () {
             $("#data-autocomplete-source").keypress(function () {
                 var target = $(this);
                 target.autocomplete({ source: target.attr("data-autocomplete-source") });
             });
 
-           // $("#wait").fadeOut(1000);
+            // $("#wait").fadeOut(1000);
 
         });
 
-        $(function() {
+        $(function () {
             //$(window).load(function () {
 
             //});
